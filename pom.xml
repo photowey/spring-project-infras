@@ -46,6 +46,7 @@
     <!-- @formatter:on -->
 
     <modules>
+        <module>spring-infras-spring-boot-starter</module>
         <module>spring-project-infras-bean</module>
         <module>spring-project-infras-core</module>
     </modules>
@@ -69,7 +70,12 @@
         <maven-versions-plugin.version>2.7</maven-versions-plugin.version>
 
         <spring.version>5.3.23</spring.version>
+        <spring-boot.version>2.7.5</spring-boot.version>
+        <spring-boot-v3.version>3.2.4</spring-boot-v3.version>
+
         <slf4h.version>1.7.36</slf4h.version>
+
+        <junit-jupiter-api.version>5.10.2</junit-jupiter-api.version>
 
         <io.github.photowey.project.url>https://github.com/photowey/spring-project-infras</io.github.photowey.project.url>
     </properties>
@@ -80,6 +86,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>spring-infras-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.github.photowey</groupId>
                 <artifactId>spring-project-infras-bean</artifactId>

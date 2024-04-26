@@ -18,8 +18,6 @@ package io.github.photowey.spring.infras.bean.annotation;
 import io.github.photowey.spring.infras.bean.engine.notify.NotifyEngine;
 import io.github.photowey.spring.infras.bean.engine.notify.NotifyEngineAwareBeanPostProcessor;
 import io.github.photowey.spring.infras.bean.engine.notify.NotifyEngineImpl;
-import io.github.photowey.spring.infras.bean.notify.DefaultNotifyCenter;
-import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
 import io.github.photowey.spring.infras.core.context.ApplicationContextInjector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,9 +59,12 @@ public @interface EnableInfrasComponents {
             return new ApplicationContextInjector();
         }
 
+        // @see InfrasEngineAutoConfigure.InfrasConfigure#notifyCenter
+        /*
         @Bean
         public NotifyCenter notifyCenter() {
             return new DefaultNotifyCenter();
         }
+        */
     }
 }

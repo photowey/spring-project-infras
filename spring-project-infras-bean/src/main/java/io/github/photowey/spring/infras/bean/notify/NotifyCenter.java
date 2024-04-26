@@ -32,6 +32,9 @@ import java.util.concurrent.Executor;
 public interface NotifyCenter extends ApplicationContextAware, ApplicationContextGetter {
 
     String DEFAULT_NOTIFY_EXECUTOR_NAME = "notifyAsyncExecutor";
+    String NOTIFY_EXECUTOR_CORE_POOL_SIZE_CONFIG_KEY = "io.github.photowey.notify.async.executor.core.pool.size";
+    String NOTIFY_EXECUTOR_MAX_POOL_SIZE_CONFIG_KEY = "io.github.photowey.notify.async.executor.max.pool.size";
+    String NOTIFY_EXECUTOR_QUEUE_CAPACITY_CONFIG_KEY = "io.github.photowey.notify.async.executor.queue.capacity";
 
     <E extends ApplicationEvent> void publishEvent(E event);
 
