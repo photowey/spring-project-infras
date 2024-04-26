@@ -69,6 +69,7 @@
         <maven-versions-plugin.version>2.7</maven-versions-plugin.version>
 
         <spring.version>5.3.23</spring.version>
+        <slf4h.version>1.7.36</slf4h.version>
 
         <io.github.photowey.project.url>https://github.com/photowey/spring-project-infras</io.github.photowey.project.url>
     </properties>
@@ -94,6 +95,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4h.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
