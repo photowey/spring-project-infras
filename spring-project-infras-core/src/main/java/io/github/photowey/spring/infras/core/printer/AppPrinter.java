@@ -31,7 +31,7 @@ import java.util.function.Supplier;
  * {@code AppPrinter}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public final class AppPrinter {
@@ -50,23 +50,23 @@ public final class AppPrinter {
     private static final String HTTP = "http";
 
     public static void print(ConfigurableApplicationContext applicationContext) {
-        print(applicationContext, true);
+        print(applicationContext, AppContext.defaultAppContext());
     }
 
-    public static void print(ConfigurableApplicationContext applicationContext, boolean swagger) {
+    public static void print(ConfigurableApplicationContext applicationContext, AppContext.AppContextBuilder builder) {
         ConfigurableEnvironment environment = applicationContext.getEnvironment();
-        print(applicationContext, swagger, () -> Optional
+        print(applicationContext, builder, () -> Optional
                 .ofNullable(environment.getProperty(SERVLET_CONTEXT_PATH))
                 .filter(StringUtils::hasText)
                 .orElse(""));
     }
 
-    public static void print(ConfigurableApplicationContext applicationContext, boolean swagger, Supplier<String> contextPathFunc) {
+    public static void print(ConfigurableApplicationContext applicationContext, AppContext.AppContextBuilder builder, Supplier<String> contextPathFunc) {
         ConfigurableEnvironment environment = applicationContext.getEnvironment();
         String protocol = Optional.ofNullable(environment.getProperty(SERVER_SSL_KEY)).map(key -> HTTPS).orElse(HTTP);
         String app = environment.getProperty(APPLICATION_NAME);
         String port = environment.getProperty(SERVER_PORT);
-        String[] profileActive = environment.getActiveProfiles().length == 0
+        String[] profileActives = environment.getActiveProfiles().length == 0
                 ? environment.getDefaultProfiles()
                 : environment.getActiveProfiles();
         String host = "localhost";
@@ -82,16 +82,23 @@ public final class AppPrinter {
                 .filter(StringUtils::hasText)
                 .orElse("");
 
-        if (swagger) {
-            withSwagger(protocol, app, port, profileActive, host, contextPath, healthContextPath);
+        AppContext ctx = builder.protocol(protocol)
+                .app(app)
+                .host(host)
+                .port(port)
+                .profileActive(StringUtils.arrayToCommaDelimitedString(profileActives))
+                .contextPath(contextPath)
+                .healthContextPath(healthContextPath)
+                .build();
+
+        if (ctx.isSwaggerEnabled()) {
+            withSwagger(ctx);
         } else {
-            withoutSwagger(protocol, app, port, profileActive, host, contextPath, healthContextPath);
+            withoutSwagger(ctx);
         }
     }
 
-    private static void withoutSwagger(
-            String protocol, String app, String port,
-            String[] profileActive, String host, String contextPath, String healthContextPath) {
+    private static void withoutSwagger(AppContext ctx) {
         log.info("\n----------------------------------------------------------\n\t" +
                         "Bootstrap: the '{}' is Success!\n\t" +
                         "Application: '{}' is running! Access URLs:\n\t" +
@@ -99,33 +106,31 @@ public final class AppPrinter {
                         "External: \t{}://{}:{}{}\n\t" +
                         "Actuator: \t{}://{}:{}{}/actuator/health\n\t" +
                         "Profile(s): {}\n----------------------------------------------------------",
-                app + " Context",
-                app,
-                protocol, port, contextPath,
-                protocol, host, port, contextPath,
-                protocol, host, port, healthContextPath,
-                profileActive
+                ctx.getApp() + " Context",
+                ctx.getApp(),
+                ctx.getProtocol(), ctx.getPort(), ctx.getContextPath(),
+                ctx.getProtocol(), ctx.getHost(), ctx.getPort(), ctx.getContextPath(),
+                ctx.getProtocol(), ctx.getHost(), ctx.getPort(), ctx.getHealthContextPath(),
+                ctx.getProfileActive()
         );
     }
 
-    private static void withSwagger(
-            String protocol, String app, String port,
-            String[] profileActive, String host, String contextPath, String healthContextPath) {
+    private static void withSwagger(AppContext ctx) {
         log.info("\n----------------------------------------------------------\n\t" +
                         "Bootstrap: the '{}' is Success!\n\t" +
                         "Application: '{}' is running! Access URLs:\n\t" +
                         "Local: \t\t{}://localhost:{}{}\n\t" +
                         "External: \t{}://{}:{}{}\n\t" +
-                        "Swagger: \t{}://{}:{}{}/doc.html\n\t" +
+                        "Swagger: \t{}://{}:{}{}/{}\n\t" +
                         "Actuator: \t{}://{}:{}{}/actuator/health\n\t" +
                         "Profile(s): {}\n----------------------------------------------------------",
-                app + " Context",
-                app,
-                protocol, port, contextPath,
-                protocol, host, port, contextPath,
-                protocol, host, port, contextPath,
-                protocol, host, port, healthContextPath,
-                profileActive
+                ctx.getApp() + " Context",
+                ctx.getApp(),
+                ctx.getProtocol(), ctx.getPort(), ctx.getContextPath(),
+                ctx.getProtocol(), ctx.getHost(), ctx.getPort(), ctx.getContextPath(),
+                ctx.getProtocol(), ctx.getHost(), ctx.getPort(), ctx.getContextPath(), ctx.getSwaggerPath(),
+                ctx.getProtocol(), ctx.getHost(), ctx.getPort(), ctx.getHealthContextPath(),
+                ctx.getProfileActive()
         );
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>io.github.photowey</groupId>
     <artifactId>spring-project-infras</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
@@ -49,6 +49,7 @@
         <module>spring-infras-spring-boot-starter</module>
         <module>spring-project-infras-bean</module>
         <module>spring-project-infras-core</module>
+        <module>spring-project-infras-web</module>
     </modules>
 
     <!-- @formatter:off -->
@@ -73,7 +74,7 @@
         <spring-boot.version>2.7.5</spring-boot.version>
         <spring-boot-v3.version>3.2.4</spring-boot-v3.version>
 
-        <slf4h.version>1.7.36</slf4h.version>
+        <slf4j.version>1.7.36</slf4j.version>
 
         <junit-jupiter-api.version>5.10.2</junit-jupiter-api.version>
 
@@ -101,17 +102,27 @@
                 <artifactId>spring-project-infras-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.github.photowey</groupId>
+                <artifactId>spring-project-infras-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4h.version}</version>
+                <version>${slf4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

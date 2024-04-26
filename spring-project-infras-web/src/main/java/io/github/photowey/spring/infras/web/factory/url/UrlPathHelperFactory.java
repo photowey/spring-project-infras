@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.bean.engine.notify;
+package io.github.photowey.spring.infras.web.factory.url;
 
-import io.github.photowey.spring.infras.bean.engine.AbstractEngine;
-import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
+import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import org.springframework.web.util.UrlPathHelper;
 
 /**
- * {@code NotifyEngineImpl}
+ * {@code UrlPathHelperFactory}
  *
  * @author photowey
  * @version 1.1.0
  * @since 2024/04/26
  */
-public class NotifyEngineImpl extends AbstractEngine implements NotifyEngine {
+public final class UrlPathHelperFactory {
 
-    @Override
-    public NotifyCenter notifyCenter() {
-        return this.beanFactory.getBean(NotifyCenter.class);
+    private UrlPathHelperFactory() {
+        AssertionErrorThrower.throwz(UrlPathHelperFactory.class);
+    }
+
+    public static UrlPathHelper create() {
+        return new UrlPathHelper();
     }
 }

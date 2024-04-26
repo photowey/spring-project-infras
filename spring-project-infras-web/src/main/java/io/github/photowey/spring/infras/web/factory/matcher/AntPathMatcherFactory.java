@@ -13,30 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.core.hardware;
+package io.github.photowey.spring.infras.web.factory.matcher;
 
 import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import org.springframework.util.AntPathMatcher;
 
 /**
- * {@code HardwareUtils}
+ * {@code AntPathMatcherFactory}
  *
  * @author photowey
  * @version 1.1.0
  * @since 2024/04/26
  */
-public final class HardwareUtils {
+public final class AntPathMatcherFactory {
 
-    private static final int NCPU = Runtime.getRuntime().availableProcessors();
-
-    private HardwareUtils() {
-        AssertionErrorThrower.throwz(HardwareUtils.class);
+    private AntPathMatcherFactory() {
+        AssertionErrorThrower.throwz(AntPathMatcherFactory.class);
     }
 
-    public static int getNcpu() {
-        return NCPU;
+    public static AntPathMatcher create() {
+        return create(false, false);
     }
 
-    public static int getDoubleNcpu() {
-        return NCPU << 1;
+    public static AntPathMatcher create(boolean caseSensitive) {
+        return create(caseSensitive, false);
+    }
+
+    public static AntPathMatcher create(boolean caseSensitive, boolean trimTokens) {
+        AntPathMatcher matcher = new AntPathMatcher();
+        matcher.setCaseSensitive(caseSensitive);
+        matcher.setTrimTokens(trimTokens);
+
+        return matcher;
     }
 }

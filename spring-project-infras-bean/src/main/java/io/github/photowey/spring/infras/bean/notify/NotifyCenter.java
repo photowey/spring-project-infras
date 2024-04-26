@@ -26,27 +26,49 @@ import java.util.concurrent.Executor;
  * {@code NotifyCenter}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public interface NotifyCenter extends ApplicationContextAware, ApplicationContextGetter {
 
-    String DEFAULT_NOTIFY_EXECUTOR_NAME = "notifyAsyncExecutor";
+    String SPRING_INFRAS_NOTIFIER_BEAN_NAME = "springInfrasNotifyCenter";
+    String NOTIFY_EXECUTOR_BEAN_NAME = "notifyAsyncExecutor";
+
     String NOTIFY_EXECUTOR_CORE_POOL_SIZE_CONFIG_KEY = "io.github.photowey.notify.async.executor.core.pool.size";
     String NOTIFY_EXECUTOR_MAX_POOL_SIZE_CONFIG_KEY = "io.github.photowey.notify.async.executor.max.pool.size";
     String NOTIFY_EXECUTOR_QUEUE_CAPACITY_CONFIG_KEY = "io.github.photowey.notify.async.executor.queue.capacity";
+    String NOTIFY_EXECUTOR_KEEP_ALIVE_CONFIG_KEY = "io.github.photowey.notify.async.executor.keep.alive";
 
+    /**
+     * Publish event.
+     *
+     * @param event the event.
+     * @param <E>   the event type.
+     */
     <E extends ApplicationEvent> void publishEvent(E event);
 
+    /**
+     * Publish async event.
+     *
+     * @param event the async event.
+     * @param <E>   the event type.
+     */
     default <E extends ApplicationEvent> void publishAsyncEvent(E event) {
-        this.publishAsyncEvent(event, this.defaultThreadPoolTaskExecutor());
+        this.publishAsyncEvent(event, this.tryAcquireDefaultEventExecutor());
     }
 
+    /**
+     * Publish async event.
+     *
+     * @param event    the async event.
+     * @param executor the async executor of event.
+     * @param <E>      the event type.
+     */
     <E extends ApplicationEvent> void publishAsyncEvent(E event, Executor executor);
 
-    default Executor defaultThreadPoolTaskExecutor() {
+    default Executor tryAcquireDefaultEventExecutor() {
         try {
-            return this.applicationContext().getBean(DEFAULT_NOTIFY_EXECUTOR_NAME, Executor.class);
+            return this.applicationContext().getBean(NOTIFY_EXECUTOR_BEAN_NAME, Executor.class);
         } catch (NoSuchBeanDefinitionException e) {
             throw new RuntimeException("infras: not found an Executor(java.util.concurrent.Executor) Bean named: notifyAsyncExecutor");
         }

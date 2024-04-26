@@ -19,7 +19,7 @@ package io.github.photowey.spring.infras.core.thrower;
  * {@code AssertionErrorThrower}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public final class AssertionErrorThrower {

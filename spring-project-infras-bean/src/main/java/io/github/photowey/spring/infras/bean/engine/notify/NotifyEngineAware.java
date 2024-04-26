@@ -21,10 +21,15 @@ import io.github.photowey.spring.infras.bean.engine.EngineAware;
  * {@code NotifyEngineAware}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public interface NotifyEngineAware extends EngineAware {
 
+    /**
+     * Set {@link NotifyEngine}
+     *
+     * @param notifyEngine {@link NotifyEngine}
+     */
     void setNotifyEngine(NotifyEngine notifyEngine);
 }

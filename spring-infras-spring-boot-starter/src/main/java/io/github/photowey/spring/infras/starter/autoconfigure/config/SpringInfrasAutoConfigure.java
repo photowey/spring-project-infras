@@ -18,7 +18,9 @@ package io.github.photowey.spring.infras.starter.autoconfigure.config;
 import io.github.photowey.spring.infras.bean.annotation.EnableInfrasComponents;
 import io.github.photowey.spring.infras.bean.notify.DefaultNotifyCenter;
 import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
+import io.github.photowey.spring.infras.starter.autoconfigure.property.SpringInfrasProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -27,7 +29,7 @@ import org.springframework.context.annotation.Import;
  * {@code SpringInfrasAutoConfigure}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 @Configuration
@@ -36,12 +38,13 @@ import org.springframework.context.annotation.Import;
         SpringInfrasAutoConfigure.SpringInfrasConfigure.class,
         TaskExecutorConfigure.class,
 })
+@EnableConfigurationProperties(SpringInfrasProperties.class)
 public class SpringInfrasAutoConfigure {
 
     @Configuration
     static class SpringInfrasConfigure {
 
-        @Bean
+        @Bean(NotifyCenter.SPRING_INFRAS_NOTIFIER_BEAN_NAME)
         @ConditionalOnMissingBean(NotifyCenter.class)
         public NotifyCenter notifyCenter() {
             return new DefaultNotifyCenter();

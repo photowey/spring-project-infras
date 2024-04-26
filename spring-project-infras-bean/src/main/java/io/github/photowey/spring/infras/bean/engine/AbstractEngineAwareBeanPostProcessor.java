@@ -22,7 +22,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  * {@code AbstractEngineAwareBeanPostProcessor}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public abstract class AbstractEngineAwareBeanPostProcessor<E extends Engine> implements EngineAwareBeanPostProcessor {

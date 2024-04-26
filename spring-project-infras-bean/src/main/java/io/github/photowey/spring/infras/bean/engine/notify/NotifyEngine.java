@@ -22,10 +22,15 @@ import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
  * {@code NotifyEngine}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 public interface NotifyEngine extends Engine {
 
+    /**
+     * Get {@link NotifyEngine}
+     *
+     * @return {@link NotifyEngine}
+     */
     NotifyCenter notifyCenter();
 }

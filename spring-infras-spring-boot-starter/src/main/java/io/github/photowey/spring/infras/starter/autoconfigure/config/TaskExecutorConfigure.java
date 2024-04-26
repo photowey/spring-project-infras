@@ -16,12 +16,11 @@
 package io.github.photowey.spring.infras.starter.autoconfigure.config;
 
 import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
-import io.github.photowey.spring.infras.core.hardware.HardwareUtils;
+import io.github.photowey.spring.infras.starter.autoconfigure.property.SpringInfrasProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.StringUtils;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -29,23 +28,23 @@ import java.util.concurrent.ThreadPoolExecutor;
  * {@code TaskExecutorConfigure}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.1.0
  * @since 2024/04/26
  */
 @Configuration
 public class TaskExecutorConfigure {
 
-    @Bean(NotifyCenter.DEFAULT_NOTIFY_EXECUTOR_NAME)
-    @ConditionalOnMissingBean(name = NotifyCenter.DEFAULT_NOTIFY_EXECUTOR_NAME)
-    public ThreadPoolTaskExecutor notifyAsyncExecutor() {
+    @Bean(NotifyCenter.NOTIFY_EXECUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean(name = NotifyCenter.NOTIFY_EXECUTOR_BEAN_NAME)
+    public ThreadPoolTaskExecutor notifyAsyncExecutor(SpringInfrasProperties props) {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(this.determineCorePoolSize(HardwareUtils.getNcpu() + 1));
-        taskExecutor.setMaxPoolSize(this.determineMaxPoolSize(HardwareUtils.getNcpu() + 1));
-        taskExecutor.setQueueCapacity(this.determineQueueCapacity(1 << 10));
+        taskExecutor.setCorePoolSize(props.threadPool().coreSize());
+        taskExecutor.setMaxPoolSize(props.threadPool().maxSize());
+        taskExecutor.setQueueCapacity(props.threadPool().queueCapacity());
 
-        taskExecutor.setKeepAliveSeconds(60);
-        taskExecutor.setThreadGroupName("async");
-        taskExecutor.setThreadNamePrefix("notify" + "-");
+        taskExecutor.setKeepAliveSeconds(props.threadPool().keepAliveSeconds());
+        taskExecutor.setThreadGroupName(props.threadPool().threadGroup());
+        taskExecutor.setThreadNamePrefix(props.threadPool().threadNamePrefix());
 
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         taskExecutor.setAllowCoreThreadTimeOut(true);
@@ -54,28 +53,5 @@ public class TaskExecutorConfigure {
         // taskExecutor.initialize();
 
         return taskExecutor;
-    }
-
-    private int determineCorePoolSize(int defaultValue) {
-        return this.determineSystemConfigValue(NotifyCenter.NOTIFY_EXECUTOR_CORE_POOL_SIZE_CONFIG_KEY, String.valueOf(defaultValue));
-    }
-
-    private int determineMaxPoolSize(int defaultValue) {
-        return this.determineSystemConfigValue(NotifyCenter.NOTIFY_EXECUTOR_MAX_POOL_SIZE_CONFIG_KEY, String.valueOf(defaultValue));
-    }
-
-    private int determineQueueCapacity(int defaultValue) {
-        return this.determineSystemConfigValue(NotifyCenter.NOTIFY_EXECUTOR_QUEUE_CAPACITY_CONFIG_KEY, String.valueOf(defaultValue));
-    }
-
-    private int determineSystemConfigValue(String configKey, String defaultValue) {
-        String configValue = System.getenv(configKey);
-        if (StringUtils.hasText(configValue)) {
-            // Not check.
-            return Integer.parseInt(configValue);
-        }
-
-        configValue = System.getProperty(configKey, defaultValue);
-        return Integer.parseInt(configValue);
     }
 }
