@@ -13,25 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.web.factory.url;
+package io.github.photowey.spring.infras.common.hardware;
 
 import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
-import org.springframework.web.util.UrlPathHelper;
 
 /**
- * {@code UrlPathHelperFactory}
+ * {@code HardwareUtils}
  *
  * @author photowey
  * @version 1.1.0
  * @since 2024/04/26
  */
-public final class UrlPathHelperFactory {
+public final class HardwareUtils {
 
-    private UrlPathHelperFactory() {
-        AssertionErrorThrower.throwz(UrlPathHelperFactory.class);
+    private static final int NCPU = Runtime.getRuntime().availableProcessors();
+
+    private HardwareUtils() {
+        AssertionErrorThrower.throwz(HardwareUtils.class);
     }
 
-    public static UrlPathHelper create() {
-        return new UrlPathHelper();
+    public static int getNcpu() {
+        return NCPU;
+    }
+
+    public static int getDoubleNcpu() {
+        return NCPU << 1;
     }
 }

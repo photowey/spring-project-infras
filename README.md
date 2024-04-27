@@ -141,7 +141,7 @@ public class App {
 >
 > There is also a disadvantage: when using component methods, the call chain will increase by at least two nodes. For example: 
 >
-> `this.InfrasEngine.serviceEngine().employeeService.add(...)`.
+> `this.infrasEngine.serviceEngine().employeeService.add(...)`.
 
 - `Engine`
 - `AbstractEngine`

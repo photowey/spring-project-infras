@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>spring-project-infras-bean</artifactId>
+    <description>The common bean module of spring-project-infras.</description>
 
     <dependencies>
         <dependency>

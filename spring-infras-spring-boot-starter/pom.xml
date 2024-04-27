@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>spring-infras-spring-boot-starter</artifactId>
+    <description>The Spring Boot starter module of spring-project-infras.</description>
 
     <dependencies>
         <dependency>

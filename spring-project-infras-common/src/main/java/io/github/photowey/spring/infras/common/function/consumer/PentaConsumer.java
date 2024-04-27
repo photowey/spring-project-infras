@@ -13,22 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.core.thrower;
+package io.github.photowey.spring.infras.common.function.consumer;
 
 /**
- * {@code AssertionErrorThrower}
+ * {@code PentaConsumer}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/28
  */
-public final class AssertionErrorThrower {
+@FunctionalInterface
+public interface PentaConsumer<T, R, U, W, Z> {
 
-    private AssertionErrorThrower() {
-        throwz(AssertionErrorThrower.class);
-    }
-
-    public static <T> void throwz(Class<T> clazz) {
-        throw new AssertionError("No " + clazz.getName() + " instances for you!");
-    }
+    void accept(T t, R r, U u, W w, Z z);
 }

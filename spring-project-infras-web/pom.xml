@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>spring-project-infras-web</artifactId>
+    <description>The common web module of spring-project-infras.</description>
 
     <dependencies>
         <dependency>

@@ -13,30 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.core.hardware;
+package io.github.photowey.spring.infras.common.function.consumer;
 
-import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import java.util.function.BiConsumer;
 
 /**
- * {@code HardwareUtils}
+ * {@code DoubleConsumer}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/28
  */
-public final class HardwareUtils {
-
-    private static final int NCPU = Runtime.getRuntime().availableProcessors();
-
-    private HardwareUtils() {
-        AssertionErrorThrower.throwz(HardwareUtils.class);
-    }
-
-    public static int getNcpu() {
-        return NCPU;
-    }
-
-    public static int getDoubleNcpu() {
-        return NCPU << 1;
-    }
-}
+@FunctionalInterface
+public interface DoubleConsumer<T, U> extends BiConsumer<T, U> {}
