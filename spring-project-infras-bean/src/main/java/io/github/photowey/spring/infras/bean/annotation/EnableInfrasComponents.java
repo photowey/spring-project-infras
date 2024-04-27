@@ -37,11 +37,7 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import(value = {
-        NotifyEngineAwareBeanPostProcessor.class,
-        EnableInfrasComponents.InfrasEngineConfigure.class,
-        EnableInfrasComponents.InfrasComponentConfigure.class,
-})
+@Import(value = {NotifyEngineAwareBeanPostProcessor.class, EnableInfrasComponents.InfrasEngineConfigure.class, EnableInfrasComponents.InfrasComponentConfigure.class,})
 public @interface EnableInfrasComponents {
 
     @Configuration

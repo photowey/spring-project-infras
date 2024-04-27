@@ -20,32 +20,31 @@ import io.github.photowey.spring.infras.starter.autoconfigure.property.SpringInf
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * {@code SpringInfrasAutoConfigure}
+ * {@code SpringInfrasConfigure}
  *
  * @author photowey
- * @version 1.1.0
+ * @version 1.2.0
  * @since 2024/04/26
  */
-@AutoConfiguration
+@Configuration
 @Import(value = {
         TaskExecutorConfigure.class,
-        SpringInfrasAutoConfigure.SpringInfrasComponentConfigure.class,
+        SpringInfrasConfigure.SpringInfrasComponentConfigure.class,
 })
-@ConditionalOnClass(AutoConfiguration.class)
-public class SpringInfrasAutoConfigure implements SmartInitializingSingleton {
+@ConditionalOnMissingClass("org.springframework.boot.autoconfigure.AutoConfiguration")
+public class SpringInfrasConfigure implements SmartInitializingSingleton {
 
     private static final Logger log = LoggerFactory.getLogger(SpringInfrasConfigure.class);
 
     @Override
     public void afterSingletonsInstantiated() {
-        log.info("infras: auto.configure.in.mode: [org.springframework.boot.autoconfigure.AutoConfiguration.imports]");
+        log.info("infras: auto.configure.in.mode: [spring.factories]");
     }
 
     @Configuration

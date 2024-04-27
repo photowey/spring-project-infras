@@ -7,7 +7,7 @@
     <parent>
         <groupId>io.github.photowey</groupId>
         <artifactId>spring-project-infras</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <artifactId>spring-project-infras-web</artifactId>
@@ -20,6 +20,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

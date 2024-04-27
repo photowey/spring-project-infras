@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 io.github.photowey.spring.infras.starter.autoconfigure.config.SpringInfrasAutoConfigure
