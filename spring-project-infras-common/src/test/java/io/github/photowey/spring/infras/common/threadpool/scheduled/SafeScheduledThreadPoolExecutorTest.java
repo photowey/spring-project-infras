@@ -15,6 +15,8 @@
  */
 package io.github.photowey.spring.infras.common.threadpool.scheduled;
 
+import io.github.photowey.spring.infras.common.LocalTest;
+
 /**
  * {@code SafeScheduledThreadPoolExecutorTest}
  *
@@ -22,6 +24,6 @@ package io.github.photowey.spring.infras.common.threadpool.scheduled;
  * @version 1.3.0
  * @since 2024/04/28
  */
-class SafeScheduledThreadPoolExecutorTest {
+class SafeScheduledThreadPoolExecutorTest extends LocalTest {
 
 }

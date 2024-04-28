@@ -15,8 +15,10 @@
  */
 package io.github.photowey.spring.infras.common;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.github.photowey.spring.infras.common.future.Sleepers;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +29,95 @@ import java.util.concurrent.TimeUnit;
  * @since 2024/04/28
  */
 public abstract class LocalTest {
+
+    public interface View {
+        interface Public {}
+    }
+
+    public static class Student implements Serializable {
+
+        private static final long serialVersionUID = -9189460711272727208L;
+
+        @JsonView(View.Public.class)
+        private Long id;
+        @JsonView(View.Public.class)
+        private String name;
+
+        private Integer age;
+
+        public static StudentBuilder builder() {
+            return new StudentBuilder();
+        }
+
+        public Long getId() {
+            return this.id;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public Integer getAge() {
+            return this.age;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setAge(Integer age) {
+            this.age = age;
+        }
+
+        public String toString() {
+            return "Student(id=" + this.getId() + ", name=" + this.getName() + ", age=" + this.getAge() + ")";
+        }
+
+        public Student() {}
+
+        public Student(Long id, String name, Integer age) {
+            this.id = id;
+            this.name = name;
+            this.age = age;
+        }
+
+        public static class StudentBuilder {
+
+            private Long id;
+            private String name;
+            private Integer age;
+
+            StudentBuilder() {
+            }
+
+            public StudentBuilder id(Long id) {
+                this.id = id;
+                return this;
+            }
+
+            public StudentBuilder name(String name) {
+                this.name = name;
+                return this;
+            }
+
+            public StudentBuilder age(Integer age) {
+                this.age = age;
+                return this;
+            }
+
+            public Student build() {
+                return new Student(this.id, this.name, this.age);
+            }
+
+            public String toString() {
+                return "Student.StudentBuilder(id=" + this.id + ", name=" + this.name + ", age=" + this.age + ")";
+            }
+        }
+    }
 
     protected void sleep(long expected, TimeUnit unit) {
         Sleepers.sleep(expected, unit);

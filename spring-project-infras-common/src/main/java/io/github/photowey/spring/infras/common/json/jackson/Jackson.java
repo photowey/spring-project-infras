@@ -26,10 +26,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -61,8 +58,9 @@ public final class Jackson {
                 .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)
                 .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
 
+                //.configure(DeserializationFeature.USE_LONG_FOR_INTS, true)
+
                 .configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
-                .configure(DeserializationFeature.USE_LONG_FOR_INTS, true)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
 
@@ -93,7 +91,7 @@ public final class Jackson {
     // ----------------------------------------------------------------
 
     /**
-     * Parse Json Object.
+     * Parse JSON Object.
      *
      * @param json  the string json body.
      * @param clazz the target class.
@@ -101,54 +99,88 @@ public final class Jackson {
      * @return T type.
      */
     public static <T> T parseObject(String json, Class<T> clazz) {
+        return parseObject(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, String json, Class<T> clazz) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, clazz);
+            return objectMapper.readValue(json, clazz);
         } catch (JsonProcessingException processingException) {
             return throwUnchecked(processingException);
         }
     }
+
+    // ----------------------------------------------------------------
 
     public static <T> T parseObject(byte[] json, Class<T> clazz) {
+        return parseObject(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, clazz);
+            return objectMapper.readValue(json, clazz);
         } catch (Exception processingException) {
             return throwUnchecked(processingException);
         }
     }
+
+    // ----------------------------------------------------------------
 
     public static <T> T parseObject(InputStream json, Class<T> clazz) {
+        return parseObject(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, InputStream json, Class<T> clazz) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, clazz);
+            return objectMapper.readValue(json, clazz);
         } catch (Exception processingException) {
             return throwUnchecked(processingException);
         }
     }
 
+    // ----------------------------------------------------------------
+
     public static <T> T parseObject(String json, TypeReference<T> typeRef) {
+        return parseObject(getObjectMapper(), json, typeRef);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, String json, TypeReference<T> typeRef) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, typeRef);
+            return objectMapper.readValue(json, typeRef);
         } catch (JsonProcessingException processingException) {
             return throwUnchecked(processingException);
         }
     }
 
+    // ----------------------------------------------------------------
+
     public static <T> T parseObject(byte[] json, TypeReference<T> typeRef) {
+        return parseObject(getObjectMapper(), json, typeRef);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, byte[] json, TypeReference<T> typeRef) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, typeRef);
+            return objectMapper.readValue(json, typeRef);
         } catch (Exception processingException) {
             return throwUnchecked(processingException);
         }
     }
 
+    // ----------------------------------------------------------------
+
     public static <T> T parseObject(InputStream json, TypeReference<T> typeRef) {
+        return parseObject(getObjectMapper(), json, typeRef);
+    }
+
+    public static <T> T parseObject(ObjectMapper objectMapper, InputStream json, TypeReference<T> typeRef) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.readValue(json, typeRef);
+            return objectMapper.readValue(json, typeRef);
         } catch (Exception processingException) {
             return throwUnchecked(processingException);
         }
@@ -163,6 +195,8 @@ public final class Jackson {
     public static <T> List<T> parseArray(byte[] json, Class<T> clazz) {
         return parseObject(json, new TypeReference<List<T>>() {});
     }
+
+    // ----------------------------------------------------------------
 
     public static <T> List<T> parseArray(InputStream json) {
         return parseObject(json, new TypeReference<List<T>>() {});
@@ -233,39 +267,55 @@ public final class Jackson {
     // ----------------------------------------------------------------
 
     /**
-     * Write a Object to json string.
+     * Write an Object to json string.
      *
      * @param object the target object.
      * @param <T>    the target object type.
      * @return the string json body.
      */
-    public static <T> String toJsonString(T object) {
-        return toJsonString(object, Function.identity());
+    public static <T> String toJSONString(T object) {
+        return toJSONString(object, Function.identity());
     }
 
-    public static <T> String toJsonString(T object, Class<?> view) {
-        return toJsonString(object, (writer) -> {
+    /**
+     * Write an Object to json string with view.
+     *
+     * @param object the target object.
+     * @param view   the json view.
+     * @param <T>    the target object type.
+     * @return the string json body.
+     */
+    public static <T> String toJSONString(T object, Class<?> view) {
+        return toJSONString(object, (writer) -> {
             return null != view
                     ? writer.withView(view)
                     : writer;
         });
     }
 
-    public static <T> String toJsonString(T object, Function<ObjectWriter, ObjectWriter> fx) {
+    public static <T> String toJSONString(T object, Function<ObjectWriter, ObjectWriter> fx) {
+        return toJSONString(getObjectMapper(), object, fx);
+    }
+
+    public static <T> String toJSONString(ObjectMapper objectMapper, T object, Function<ObjectWriter, ObjectWriter> fx) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper objectMapper = getObjectMapper();
             ObjectWriter objectWriter = objectMapper.writer();
             objectWriter = fx.apply(objectWriter);
             return objectWriter.writeValueAsString(object);
-        } catch (Exception ioe) {
-            return throwUnchecked(ioe, String.class);
+        } catch (Exception e) {
+            return throwUnchecked(e, String.class);
         }
     }
 
     // ----------------------------------------------------------------
 
-    public static String toPrettyJson(String json) {
-        ObjectMapper objectMapper = getObjectMapper();
+    public static String toPrettyString(String json) {
+        return toPrettyString(getObjectMapper(), json);
+    }
+
+    public static String toPrettyString(ObjectMapper objectMapper, String json) {
+        checkNPE(objectMapper);
         try {
             // @formatter:off
             return objectMapper
@@ -279,12 +329,16 @@ public final class Jackson {
 
     // ----------------------------------------------------------------
 
-    public static <T> byte[] toByteArray(T object) {
+    public static <T> byte[] toBytes(T object) {
+        return toBytes(getObjectMapper(), object);
+    }
+
+    public static <T> byte[] toBytes(ObjectMapper objectMapper, T object) {
+        checkNPE(objectMapper);
         try {
-            ObjectMapper mapper = getObjectMapper();
-            return mapper.writeValueAsBytes(object);
-        } catch (Exception ioe) {
-            return throwUnchecked(ioe, byte[].class);
+            return objectMapper.writeValueAsBytes(object);
+        } catch (Exception e) {
+            return throwUnchecked(e, byte[].class);
         }
     }
 
@@ -294,18 +348,36 @@ public final class Jackson {
         return parseObject(json, JsonNode.class);
     }
 
+    public static JsonNode toJsonNode(ObjectMapper objectMapper, String json) {
+        return parseObject(objectMapper, json, JsonNode.class);
+    }
+
     // ----------------------------------------------------------------
 
     public static <T> T toObject(Map<String, Object> map, Class<T> targetClass) {
-        ObjectMapper mapper = getObjectMapper();
-        return mapper.convertValue(map, targetClass);
+        return toObject(getObjectMapper(), map, targetClass);
+    }
+
+    public static <T> T toObject(ObjectMapper objectMapper, Map<String, Object> map, Class<T> targetClass) {
+        checkNPE(objectMapper);
+        return objectMapper.convertValue(map, targetClass);
     }
 
     // ----------------------------------------------------------------
 
     public static <T> Map<String, Object> toMap(T object) {
-        ObjectMapper mapper = getObjectMapper();
-        return mapper.convertValue(object, new TypeReference<Map<String, Object>>() {});
+        return toMap(getObjectMapper(), object);
+    }
+
+    public static <T> Map<String, Object> toMap(ObjectMapper objectMapper, T object) {
+        checkNPE(objectMapper);
+        return objectMapper.convertValue(object, new TypeReference<Map<String, Object>>() {});
+    }
+
+    // ----------------------------------------------------------------
+
+    public static void checkNPE(ObjectMapper objectMapper) {
+        Objects.requireNonNull(objectMapper, "infras: the objectMapper can't be null.");
     }
 
     // ----------------------------------------------------------------
