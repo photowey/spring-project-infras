@@ -21,10 +21,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
@@ -55,19 +55,25 @@ public final class Jackson {
     };
 
     private static ObjectMapper initDefaultObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
-        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        objectMapper.configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
-        objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-        objectMapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
-        objectMapper.registerModule(new JavaTimeModule());
+        JsonMapper.Builder builder = JsonMapper.builder()
+                .configure(JsonParser.Feature.ALLOW_COMMENTS, true)
+                .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
+                .configure(JsonParser.Feature.IGNORE_UNDEFINED, true)
+                .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
 
-        // timestamp
-        objectMapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                .configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
+                .configure(DeserializationFeature.USE_LONG_FOR_INTS, true)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
 
-        return objectMapper;
+                // Exclude properties not annotated with @JsonView
+                .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false)
+                .addModule(new JavaTimeModule());
+
+        JsonMapper jsonMapper = builder.build();
+        jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        return jsonMapper;
     }
 
     // ----------------------------------------------------------------
@@ -239,20 +245,19 @@ public final class Jackson {
 
     public static <T> String toJsonString(T object, Class<?> view) {
         return toJsonString(object, (writer) -> {
-            if (view != null) {
-                return writer.withView(view);
-            }
-            return writer;
+            return null != view
+                    ? writer.withView(view)
+                    : writer;
         });
     }
 
     public static <T> String toJsonString(T object, Function<ObjectWriter, ObjectWriter> fx) {
         try {
-            ObjectMapper mapper = getObjectMapper();
-            ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+            ObjectMapper objectMapper = getObjectMapper();
+            ObjectWriter objectWriter = objectMapper.writer();
             objectWriter = fx.apply(objectWriter);
             return objectWriter.writeValueAsString(object);
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             return throwUnchecked(ioe, String.class);
         }
     }
@@ -260,14 +265,14 @@ public final class Jackson {
     // ----------------------------------------------------------------
 
     public static String toPrettyJson(String json) {
-        ObjectMapper mapper = getObjectMapper();
+        ObjectMapper objectMapper = getObjectMapper();
         try {
             // @formatter:off
-            return mapper
+            return objectMapper
                     .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(mapper.readValue(json, JsonNode.class));
+                    .writeValueAsString(objectMapper.readValue(json, JsonNode.class));
             // @formatter:on
-        } catch (IOException e) {
+        } catch (Exception e) {
             return throwUnchecked(e, String.class);
         }
     }
@@ -278,7 +283,7 @@ public final class Jackson {
         try {
             ObjectMapper mapper = getObjectMapper();
             return mapper.writeValueAsBytes(object);
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             return throwUnchecked(ioe, byte[].class);
         }
     }

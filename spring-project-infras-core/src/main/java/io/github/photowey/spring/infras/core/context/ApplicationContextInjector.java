@@ -15,6 +15,8 @@
  */
 package io.github.photowey.spring.infras.core.context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.photowey.spring.infras.common.json.jackson.Jackson;
 import io.github.photowey.spring.infras.core.getter.ApplicationContextGetter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -46,5 +48,10 @@ public class ApplicationContextInjector implements ApplicationContextAware, Appl
 
     private void inject() {
         ApplicationContextHolder.INSTANCE.applicationContext(this.configurableApplicationContext());
+        Jackson.injectSharedObjectMapper(this.objectMapper());
+    }
+
+    public ObjectMapper objectMapper() {
+        return this.applicationContext.getBean(ObjectMapper.class);
     }
 }

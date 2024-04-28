@@ -79,6 +79,7 @@
         <jackson.version>2.14.1</jackson.version>
 
         <junit-jupiter-api.version>5.10.2</junit-jupiter-api.version>
+        <json-path.version>2.9.0</json-path.version>
 
         <io.github.photowey.project.url>https://github.com/photowey/spring-project-infras</io.github.photowey.project.url>
     </properties>
@@ -141,6 +142,18 @@
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json-path.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter-api.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
