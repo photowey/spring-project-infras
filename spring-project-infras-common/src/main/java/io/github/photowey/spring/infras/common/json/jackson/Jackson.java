@@ -27,6 +27,7 @@ import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -44,12 +45,7 @@ public final class Jackson {
 
     private static ObjectMapper sharedObjectMapper;
 
-    private static final InheritableThreadLocal<ObjectMapper> objectMapperHolder = new InheritableThreadLocal<ObjectMapper>() {
-        @Override
-        protected ObjectMapper initialValue() {
-            return initObjectMapper();
-        }
-    };
+    private static final ConcurrentHashMap<Class<ObjectMapper>, ObjectMapper> ctx = new ConcurrentHashMap<>(2);
 
     private static ObjectMapper initDefaultObjectMapper() {
         JsonMapper.Builder builder = JsonMapper.builder()
@@ -76,16 +72,25 @@ public final class Jackson {
 
     // ----------------------------------------------------------------
 
-    private static ObjectMapper initObjectMapper() {
-        return sharedObjectMapper != null ? sharedObjectMapper : initDefaultObjectMapper();
+    public interface View {
+
+        interface Public {}
+
+        interface Private {}
     }
+
+    // ----------------------------------------------------------------
 
     public static void injectSharedObjectMapper(ObjectMapper objectMapper) {
         sharedObjectMapper = objectMapper;
     }
 
     public static ObjectMapper getObjectMapper() {
-        return sharedObjectMapper != null ? sharedObjectMapper : objectMapperHolder.get();
+        return sharedObjectMapper != null ? sharedObjectMapper : ctx.computeIfAbsent(ObjectMapper.class, (x) -> initDefaultObjectMapper());
+    }
+
+    public static void clean() {
+        ctx.clear();
     }
 
     // ----------------------------------------------------------------

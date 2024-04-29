@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.photowey.spring.infras.common.json.jackson.Jackson;
 import io.github.photowey.spring.infras.core.getter.ApplicationContextGetter;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.NonNull;
@@ -30,7 +31,7 @@ import org.springframework.lang.NonNull;
  * @version 1.0.0
  * @since 2024/04/26
  */
-public class ApplicationContextInjector implements ApplicationContextAware, ApplicationContextGetter {
+public class ApplicationContextInjector implements ApplicationContextAware, ApplicationContextGetter, DisposableBean {
 
     private ApplicationContext applicationContext;
 
@@ -44,6 +45,12 @@ public class ApplicationContextInjector implements ApplicationContextAware, Appl
     @Override
     public ApplicationContext applicationContext() {
         return this.applicationContext;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        ApplicationContextHolder.INSTANCE.cleanSharedObjects();
+        Jackson.clean();
     }
 
     private void inject() {
