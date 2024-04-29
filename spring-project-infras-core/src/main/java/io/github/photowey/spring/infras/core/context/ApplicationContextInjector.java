@@ -49,7 +49,7 @@ public class ApplicationContextInjector implements ApplicationContextAware, Appl
 
     @Override
     public void destroy() throws Exception {
-        ApplicationContextHolder.INSTANCE.cleanSharedObjects();
+        ApplicationContextHolder.clean();
         Jackson.clean();
     }
 

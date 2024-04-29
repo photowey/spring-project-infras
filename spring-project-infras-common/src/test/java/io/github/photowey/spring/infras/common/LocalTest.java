@@ -17,6 +17,7 @@ package io.github.photowey.spring.infras.common;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.github.photowey.spring.infras.common.future.Sleepers;
+import io.github.photowey.spring.infras.common.json.jackson.View;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -29,10 +30,6 @@ import java.util.concurrent.TimeUnit;
  * @since 2024/04/28
  */
 public abstract class LocalTest {
-
-    public interface View {
-        interface Public {}
-    }
 
     public static class Student implements Serializable {
 

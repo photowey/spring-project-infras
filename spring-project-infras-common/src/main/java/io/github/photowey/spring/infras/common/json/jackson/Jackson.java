@@ -72,15 +72,6 @@ public final class Jackson {
 
     // ----------------------------------------------------------------
 
-    public interface View {
-
-        interface Public {}
-
-        interface Private {}
-    }
-
-    // ----------------------------------------------------------------
-
     public static void injectSharedObjectMapper(ObjectMapper objectMapper) {
         sharedObjectMapper = objectMapper;
     }
