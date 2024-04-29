@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function.consumer;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface PentaConsumer<T, R, U, W, Z> {
+public interface PentaConsumer<T, U, V, W, Z> {
 
-    void accept(T t, R r, U u, W w, Z z);
+    void accept(T t, U u, V v, W w, Z z);
 }

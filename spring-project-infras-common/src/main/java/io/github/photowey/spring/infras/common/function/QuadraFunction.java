@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface QuadraFunction<T, U, W, R> {
+public interface QuadraFunction<T, U, V, W, R> {
 
-    R apply(T t, U u, W w, R r);
+    R apply(T t, U u, V v, W w);
 }

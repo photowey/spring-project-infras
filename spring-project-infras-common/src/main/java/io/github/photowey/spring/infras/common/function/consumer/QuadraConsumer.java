@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function.consumer;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface QuadraConsumer<T, R, U, W> {
+public interface QuadraConsumer<T, U, V, W> {
 
-    void accept(T t, R r, U u, W w);
+    void accept(T t, U u, V v, W w);
 }

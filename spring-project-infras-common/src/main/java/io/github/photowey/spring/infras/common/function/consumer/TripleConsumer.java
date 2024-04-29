@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function.consumer;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface TripleConsumer<T, R, U> {
+public interface TripleConsumer<T, U, V> {
 
-    void accept(T t, R r, U u);
+    void accept(T t, U u, V v);
 }

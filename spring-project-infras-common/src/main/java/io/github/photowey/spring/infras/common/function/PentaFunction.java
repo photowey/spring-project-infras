@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface PentaFunction<T, U, W, Z, R> {
+public interface PentaFunction<T, U, V, W, Z, R> {
 
-    R apply(T t, U u, W w, Z z, R r);
+    R apply(T t, U u, V v, W w, Z z);
 }

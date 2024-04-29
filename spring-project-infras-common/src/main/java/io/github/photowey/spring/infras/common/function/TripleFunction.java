@@ -23,7 +23,7 @@ package io.github.photowey.spring.infras.common.function;
  * @since 2024/04/28
  */
 @FunctionalInterface
-public interface TripleFunction<T, U, R> {
+public interface TripleFunction<T, U, V, R> {
 
-    R apply(T t, U u, R r);
+    R apply(T t, U u, V v);
 }
