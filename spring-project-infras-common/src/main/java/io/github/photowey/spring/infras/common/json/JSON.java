@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -57,6 +56,8 @@ public enum JSON {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(objectMapper, json, clazz);
         }
 
+        // ----------------------------------------------------------------
+
         public static <T> T parseObject(byte[] json, Class<T> clazz) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(json, clazz);
         }
@@ -64,6 +65,8 @@ public enum JSON {
         public static <T> T parseObject(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(objectMapper, json, clazz);
         }
+
+        // ----------------------------------------------------------------
 
         public static <T> T parseObject(InputStream json, Class<T> clazz) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(json, clazz);
@@ -73,6 +76,8 @@ public enum JSON {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(objectMapper, json, clazz);
         }
 
+        // ----------------------------------------------------------------
+
         public static <T> T parseObject(String json, TypeReference<T> typeRef) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(json, typeRef);
         }
@@ -81,6 +86,8 @@ public enum JSON {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(objectMapper, json, typeRef);
         }
 
+        // ----------------------------------------------------------------
+
         public static <T> T parseObject(byte[] json, TypeReference<T> typeRef) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(json, typeRef);
         }
@@ -88,6 +95,8 @@ public enum JSON {
         public static <T> T parseObject(ObjectMapper objectMapper, byte[] json, TypeReference<T> typeRef) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(objectMapper, json, typeRef);
         }
+
+        // ----------------------------------------------------------------
 
         public static <T> T parseObject(InputStream json, TypeReference<T> typeRef) {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseObject(json, typeRef);
@@ -99,38 +108,100 @@ public enum JSON {
 
         // ----------------------------------------------------------------
 
-        public static <T> List<T> parseArray(byte[] json) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json);
-        }
-
-        public static <T> List<T> parseArray(byte[] json, Class<T> clazz) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json, clazz);
-        }
-
-        public static <T> List<T> parseArray(InputStream json) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json);
-        }
-
-        public static <T> List<T> parseArray(InputStream json, Class<T> clazz) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json, clazz);
-        }
-
-        // ----------------------------------------------------------------
-
-        public static <T> List<T> parseArray(String json) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json);
-        }
+        // Notes:
+        // Due to the introduction of the parameter TypeReference,
+        // the essence of the parseArray and toXxx methods is the same, just a name difference.
 
         /**
          * Parse {@code json} Array.
          *
-         * @param json  the string Array json body.
-         * @param clazz the target class.
-         * @param <T>   the target class type.
+         * @param json    the string Array json body.
+         * @param typeRef the target reference.
+         * @param <T>     the target class type.
          * @return T type.
          */
-        public static <T> List<T> parseArray(String json, Class<T> clazz) {
-            return io.github.photowey.spring.infras.common.json.jackson.Jackson.parseArray(json, clazz);
+        public static <T> T parseArray(String json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T parseArray(ObjectMapper objectMapper, String json, TypeReference<T> typeRef) {
+            return parseObject(objectMapper, json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T parseArray(byte[] json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T parseArray(ObjectMapper objectMapper, byte[] json, TypeReference<T> typeRef) {
+            return parseObject(objectMapper, json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T parseArray(InputStream json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T parseArray(ObjectMapper objectMapper, InputStream json, TypeReference<T> typeRef) {
+            return parseObject(objectMapper, json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T toList(String json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toList(byte[] json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toList(InputStream json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T toSet(String json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toSet(byte[] json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toSet(InputStream json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T toCollection(String json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toCollection(byte[] json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toCollection(InputStream json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        // ----------------------------------------------------------------
+
+        public static <T> T toMap(String json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toMap(byte[] json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
+        }
+
+        public static <T> T toMap(InputStream json, TypeReference<T> typeRef) {
+            return parseObject(json, typeRef);
         }
 
         // ----------------------------------------------------------------

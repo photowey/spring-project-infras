@@ -20,7 +20,6 @@ import io.github.photowey.spring.infras.core.converter.JsonConverter;
 import io.github.photowey.spring.infras.core.getter.ObjectMapperGetter;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +38,7 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
         try {
             return this.objectMapper().writeValueAsString(payload);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e, String.class);
         }
     }
 
@@ -48,7 +47,7 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
         try {
             return this.objectMapper().readValue(body, clazz);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e, clazz);
         }
     }
 
@@ -57,7 +56,7 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
         try {
             return this.objectMapper().readValue(body, clazz);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e, clazz);
         }
     }
 
@@ -66,31 +65,42 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
         try {
             return this.objectMapper().readValue(body, clazz);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e, clazz);
         }
     }
 
-    @Override
-    default <T> List<T> parseArray(String body, Class<T> clazz) {
-        return this.parseObject(body, new TypeReference<List<T>>() {});
+    default <T> T parseObject(String body, TypeReference<T> clazz) {
+        try {
+            return this.objectMapper().readValue(body, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
     }
 
-    @Override
-    default <T> List<T> parseArray(byte[] body, Class<T> clazz) {
-        return this.parseObject(body, new TypeReference<List<T>>() {});
+    default <T> T parseObject(byte[] body, TypeReference<T> clazz) {
+        try {
+            return this.objectMapper().readValue(body, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
     }
 
-    @Override
-    default <T> List<T> parseArray(InputStream body, Class<T> clazz) {
-        return this.parseObject(body, new TypeReference<List<T>>() {});
+    default <T> T parseObject(InputStream body, TypeReference<T> clazz) {
+        try {
+            return this.objectMapper().readValue(body, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
     }
+
+    // ----------------------------------------------------------------
 
     @Override
     default <T> T toObject(Map<String, Object> map, Class<T> targetClass) {
         try {
             return this.objectMapper().convertValue(map, targetClass);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e, targetClass);
         }
     }
 
@@ -99,31 +109,21 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
         try {
             return this.objectMapper().convertValue(object, new TypeReference<Map<String, Object>>() {});
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return throwUnchecked(e);
         }
     }
 
-    default <T> T parseObject(String body, TypeReference<T> clazz) {
-        try {
-            return this.objectMapper().readValue(body, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    // ----------------------------------------------------------------
+
+    default <T> T parseArray(String body, TypeReference<T> typeRef) {
+        return this.parseObject(body, typeRef);
     }
 
-    default <T> T parseObject(byte[] body, TypeReference<T> clazz) {
-        try {
-            return this.objectMapper().readValue(body, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    default <T> T parseArray(byte[] body, TypeReference<T> typeRef) {
+        return this.parseObject(body, typeRef);
     }
 
-    default <T> T parseObject(InputStream body, TypeReference<T> clazz) {
-        try {
-            return this.objectMapper().readValue(body, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    default <T> T parseArray(InputStream body, TypeReference<T> typeRef) {
+        return this.parseObject(body, typeRef);
     }
 }
