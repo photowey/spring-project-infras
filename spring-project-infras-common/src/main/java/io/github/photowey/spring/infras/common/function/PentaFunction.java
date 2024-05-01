@@ -19,7 +19,7 @@ package io.github.photowey.spring.infras.common.function;
  * {@code PentaFunction}
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.3.0
  * @since 2024/04/28
  */
 @FunctionalInterface

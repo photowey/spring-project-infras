@@ -16,6 +16,7 @@
 package io.github.photowey.spring.infras.common.json;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -360,5 +361,107 @@ class JSONTest extends LocalTest {
         Assertions.assertEquals(peers3.get("id"), student.getId());
         Assertions.assertEquals(peers3.get("name"), student.getName());
         Assertions.assertEquals(peers3.get("age"), student.getAge());
+    }
+
+    // ----------------------------------------------------------------
+
+    @Test
+    void testToObject() {
+        Long now = 1714497259000L;
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        String json = JSON.Jackson.toJSONString(student);
+
+        // ----------------------------------------------------------------
+
+        Map<String, Object> ctx = JSON.Jackson.toMap(json, new TypeReference<Map<String, Object>>() {});
+        Assertions.assertNotNull(ctx);
+
+        Student peer = JSON.Jackson.toObject(ctx, Student.class);
+
+        Assertions.assertNotNull(peer);
+        Assertions.assertEquals(peer.getId(), student.getId());
+        Assertions.assertEquals(peer.getName(), student.getName());
+        Assertions.assertEquals(peer.getAge(), student.getAge());
+    }
+
+    @Test
+    void testToBytes() {
+        Long now = 1714497259000L;
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        byte[] json = JSON.Jackson.toBytes(student);
+
+        // ----------------------------------------------------------------
+
+        Map<String, Object> ctx = JSON.Jackson.toMap(json, new TypeReference<Map<String, Object>>() {});
+        Assertions.assertNotNull(ctx);
+
+        Student peer = JSON.Jackson.toObject(ctx, Student.class);
+
+        Assertions.assertNotNull(peer);
+        Assertions.assertEquals(peer.getId(), student.getId());
+        Assertions.assertEquals(peer.getName(), student.getName());
+        Assertions.assertEquals(peer.getAge(), student.getAge());
+
+        // ----------------------------------------------------------------
+
+        InputStream input = new ByteArrayInputStream(json);
+        Map<String, Object> ctx2 = JSON.Jackson.toMap(input, new TypeReference<Map<String, Object>>() {});
+        Assertions.assertNotNull(ctx2);
+
+        Student peer2 = JSON.Jackson.toObject(ctx2, Student.class);
+
+        Assertions.assertNotNull(peer2);
+        Assertions.assertEquals(peer2.getId(), student.getId());
+        Assertions.assertEquals(peer2.getName(), student.getName());
+        Assertions.assertEquals(peer2.getAge(), student.getAge());
+    }
+
+    @Test
+    void testToJsonNode() {
+        Long now = 1714497259000L;
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        String json = JSON.Jackson.toJSONString(student);
+
+        JsonNode ctx = JSON.Jackson.toJsonNode(json);
+        Assertions.assertNotNull(ctx);
+
+        Assertions.assertEquals(ctx.get("id").asLong(), student.getId());
+        Assertions.assertEquals(ctx.get("name").asText(), student.getName());
+        Assertions.assertEquals(ctx.get("age").asInt(), student.getAge());
+
+        // ----------------------------------------------------------------
+
+        byte[] bytes = JSON.Jackson.toBytes(student);
+        JsonNode ctx2 = JSON.Jackson.toJsonNode(bytes);
+        Assertions.assertNotNull(ctx2);
+
+        Assertions.assertEquals(ctx2.get("id").asLong(), student.getId());
+        Assertions.assertEquals(ctx2.get("name").asText(), student.getName());
+        Assertions.assertEquals(ctx2.get("age").asInt(), student.getAge());
+
+        // ----------------------------------------------------------------
+
+        InputStream input = new ByteArrayInputStream(bytes);
+        JsonNode ctx3 = JSON.Jackson.toJsonNode(input);
+        Assertions.assertNotNull(ctx3);
+
+        Assertions.assertEquals(ctx3.get("id").asLong(), student.getId());
+        Assertions.assertEquals(ctx3.get("name").asText(), student.getName());
+        Assertions.assertEquals(ctx3.get("age").asInt(), student.getAge());
     }
 }

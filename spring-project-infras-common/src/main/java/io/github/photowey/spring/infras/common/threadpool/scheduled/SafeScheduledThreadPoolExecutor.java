@@ -43,6 +43,13 @@ public class SafeScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor
         super(corePoolSize, threadFactory, handler);
     }
 
+    // ----------------------------------------------------------------
+
+    // Ensure that when the thread pool is executing a task,
+    // the task throws an uncontrollable exception and causes task scheduling to be blocked.
+
+    // ----------------------------------------------------------------
+
     @Override
     public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit) {
         return this.scheduleWithFixedDelay(command, initialDelay, delay, unit, (x) -> {});
@@ -52,6 +59,8 @@ public class SafeScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor
         return super.scheduleWithFixedDelay(() -> this.safeRun(command, fx), initialDelay, delay, unit);
     }
 
+    // ----------------------------------------------------------------
+
     @Override
     public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit) {
         return this.scheduleAtFixedRate(command, initialDelay, period, unit, (x) -> {});
@@ -60,6 +69,8 @@ public class SafeScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor
     public ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit, Consumer<Throwable> fx) {
         return super.scheduleAtFixedRate(() -> this.safeRun(command, fx), initialDelay, period, unit);
     }
+
+    // ----------------------------------------------------------------
 
     public void safeRun(Runnable command, Consumer<Throwable> fx) {
         try {

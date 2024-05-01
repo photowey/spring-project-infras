@@ -368,6 +368,22 @@ public final class Jackson {
         return parseObject(objectMapper, json, JsonNode.class);
     }
 
+    public static JsonNode toJsonNode(byte[] json) {
+        return parseObject(json, JsonNode.class);
+    }
+
+    public static JsonNode toJsonNode(ObjectMapper objectMapper, byte[] json) {
+        return parseObject(objectMapper, json, JsonNode.class);
+    }
+
+    public static JsonNode toJsonNode(InputStream json) {
+        return parseObject(json, JsonNode.class);
+    }
+
+    public static JsonNode toJsonNode(ObjectMapper objectMapper, InputStream json) {
+        return parseObject(objectMapper, json, JsonNode.class);
+    }
+
     // ----------------------------------------------------------------
 
     public static <T> T toObject(Map<String, Object> map, Class<T> targetClass) {

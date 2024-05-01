@@ -27,4 +27,6 @@ public interface View {
     interface Public {}
 
     interface Private {}
+
+    interface Share {}
 }

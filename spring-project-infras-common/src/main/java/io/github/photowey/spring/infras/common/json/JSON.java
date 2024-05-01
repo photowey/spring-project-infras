@@ -267,6 +267,22 @@ public enum JSON {
             return io.github.photowey.spring.infras.common.json.jackson.Jackson.toJsonNode(objectMapper, json);
         }
 
+        public static JsonNode toJsonNode(byte[] json) {
+            return io.github.photowey.spring.infras.common.json.jackson.Jackson.toJsonNode(json);
+        }
+
+        public static JsonNode toJsonNode(ObjectMapper objectMapper, byte[] json) {
+            return io.github.photowey.spring.infras.common.json.jackson.Jackson.toJsonNode(objectMapper, json);
+        }
+
+        public static JsonNode toJsonNode(InputStream json) {
+            return io.github.photowey.spring.infras.common.json.jackson.Jackson.toJsonNode(json);
+        }
+
+        public static JsonNode toJsonNode(ObjectMapper objectMapper, InputStream json) {
+            return io.github.photowey.spring.infras.common.json.jackson.Jackson.toJsonNode(objectMapper, json);
+        }
+
         // ----------------------------------------------------------------
 
         public static <T> T toObject(Map<String, Object> map, Class<T> targetClass) {
