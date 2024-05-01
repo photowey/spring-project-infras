@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.core.thrower;
+package io.github.photowey.spring.infras.common.function.consumer;
+
+import java.util.function.BiConsumer;
 
 /**
- * {@code AssertionErrorThrower}
+ * {@code DoubleConsumer}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/28
  */
-public final class AssertionErrorThrower {
-
-    private AssertionErrorThrower() {
-        throwz(AssertionErrorThrower.class);
-    }
-
-    public static <T> void throwz(Class<T> clazz) {
-        throw new AssertionError("No " + clazz.getName() + " instances for you!");
-    }
-}
+@FunctionalInterface
+public interface DoubleConsumer<T, U> extends BiConsumer<T, U> {}

@@ -15,7 +15,7 @@
  */
 package io.github.photowey.spring.infras.web.factory.matcher;
 
-import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 import org.springframework.util.AntPathMatcher;
 
 /**

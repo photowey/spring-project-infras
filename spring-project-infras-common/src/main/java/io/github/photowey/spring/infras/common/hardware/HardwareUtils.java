@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.core.hardware;
+package io.github.photowey.spring.infras.common.hardware;
 
-import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 
 /**
  * {@code HardwareUtils}

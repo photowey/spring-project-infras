@@ -13,25 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.web.factory.url;
-
-import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
-import org.springframework.web.util.UrlPathHelper;
+package io.github.photowey.spring.infras.common.function.consumer;
 
 /**
- * {@code UrlPathHelperFactory}
+ * {@code TripleConsumer}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/28
  */
-public final class UrlPathHelperFactory {
+@FunctionalInterface
+public interface TripleConsumer<T, U, V> {
 
-    private UrlPathHelperFactory() {
-        AssertionErrorThrower.throwz(UrlPathHelperFactory.class);
-    }
-
-    public static UrlPathHelper create() {
-        return new UrlPathHelper();
-    }
+    void accept(T t, U u, V v);
 }

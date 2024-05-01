@@ -15,7 +15,7 @@
  */
 package io.github.photowey.spring.infras.core.printer;
 
-import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;

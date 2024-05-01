@@ -16,7 +16,7 @@
 package io.github.photowey.spring.infras.starter.autoconfigure.property;
 
 import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
-import io.github.photowey.spring.infras.core.hardware.HardwareUtils;
+import io.github.photowey.spring.infras.common.hardware.HardwareUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 

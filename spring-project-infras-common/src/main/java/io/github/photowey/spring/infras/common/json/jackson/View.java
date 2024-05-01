@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.web.factory.url;
-
-import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
-import org.springframework.web.util.UrlPathHelper;
+package io.github.photowey.spring.infras.common.json.jackson;
 
 /**
- * {@code UrlPathHelperFactory}
+ * {@code View}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/29
  */
-public final class UrlPathHelperFactory {
+public interface View {
 
-    private UrlPathHelperFactory() {
-        AssertionErrorThrower.throwz(UrlPathHelperFactory.class);
-    }
+    interface Public {}
 
-    public static UrlPathHelper create() {
-        return new UrlPathHelper();
-    }
+    interface Private {}
+
+    interface Share {}
 }

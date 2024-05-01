@@ -15,7 +15,7 @@
  */
 package io.github.photowey.spring.infras.starter.autoconfigure.binder;
 
-import io.github.photowey.spring.infras.core.thrower.AssertionErrorThrower;
+import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;

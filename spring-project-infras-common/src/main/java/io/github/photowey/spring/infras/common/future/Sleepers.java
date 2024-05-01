@@ -13,25 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.photowey.spring.infras.web.factory.url;
+package io.github.photowey.spring.infras.common.future;
 
 import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
-import org.springframework.web.util.UrlPathHelper;
+
+import java.util.concurrent.TimeUnit;
 
 /**
- * {@code UrlPathHelperFactory}
+ * {@code Sleepers}
  *
  * @author photowey
- * @version 1.1.0
- * @since 2024/04/26
+ * @version 1.3.0
+ * @since 2024/04/28
  */
-public final class UrlPathHelperFactory {
+public final class Sleepers {
 
-    private UrlPathHelperFactory() {
-        AssertionErrorThrower.throwz(UrlPathHelperFactory.class);
+    private Sleepers() {
+        AssertionErrorThrower.throwz(Sleepers.class);
     }
 
-    public static UrlPathHelper create() {
-        return new UrlPathHelper();
+    public static void sleep(long expected, TimeUnit unit) {
+        sleep(unit.toMillis(expected));
+    }
+
+    public static void sleep(long millis) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -21,6 +21,8 @@ import io.github.photowey.spring.infras.bean.engine.notify.NotifyEngineImpl;
 import io.github.photowey.spring.infras.bean.notify.DefaultNotifyCenter;
 import io.github.photowey.spring.infras.bean.notify.NotifyCenter;
 import io.github.photowey.spring.infras.core.context.ApplicationContextInjector;
+import io.github.photowey.spring.infras.core.converter.jackson.DefaultJacksonJsonConverter;
+import io.github.photowey.spring.infras.core.converter.jackson.JacksonJsonConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -60,6 +62,11 @@ public @interface EnableInfrasComponents {
         @Bean(NotifyCenter.SPRING_INFRAS_NOTIFIER_BEAN_NAME)
         public NotifyCenter notifyCenter() {
             return new DefaultNotifyCenter();
+        }
+
+        @Bean(JacksonJsonConverter.JACKSON_JSON_CONVERTER_BEAN_NAME)
+        public JacksonJsonConverter jacksonJsonConverter() {
+            return new DefaultJacksonJsonConverter();
         }
     }
 }

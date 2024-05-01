@@ -66,6 +66,8 @@ Add this to your `pom.xml`
 - `BeanFactoryGetter`
 - `ApplicationContextGetter`
 - `EnvironmentGetter`
+- `ObjectMapperGetter`
+  - `@since 1.3.0`
 
 
 
@@ -106,7 +108,12 @@ public class App {
 
 ```
 
+#### 2.1.6.`JsonConverter`
 
+> `@since 1.3.0`
+
+- `JacksonJsonConverter`
+  - `DefaultJacksonJsonConverter`
 
 ### 2.2.`bean` module
 
@@ -141,7 +148,7 @@ public class App {
 >
 > There is also a disadvantage: when using component methods, the call chain will increase by at least two nodes. For example: 
 >
-> `this.InfrasEngine.serviceEngine().employeeService.add(...)`.
+> `this.infrasEngine.serviceEngine().employeeService.add(...)`.
 
 - `Engine`
 - `AbstractEngine`
@@ -220,3 +227,54 @@ public class App {
   - Spring Boot < `2.7.x`
 - `SpringInfrasAutoConfigure`
   - Spring Boot >= `2.7.x`
+
+### 2.5.`common`  module
+
+> `@since 1.3.0`
+
+#### 2.5.1.`Lambda Consumer`
+
+- `DoubleConsumer`
+- `TripleConsumer`
+- `QuadraConsumer`
+- `PentaConsumer`
+
+#### 2.5.2.`Lambda Function`
+
+- `DoubleFunction`
+- `TripleFunction`
+- `QuadraFunction`
+- `PentaFunction`
+- `SerializableFunction`
+
+#### 2.5.3.`Future`
+
+- `Futures`
+- `Sleepers`
+
+#### 2.5.4.`json`
+
+- `JSON`
+  - `Enum`
+  - `Jackson`
+  - `Fastjson`
+    - `Unsupported now`
+  - `Gson`
+    - `Unsupported now`
+- `Jackson`
+  - `final class`
+
+#### 2.5.5.`threadpool`
+
+> - `scheduleWithFixedDelay`
+> - `scheduleAtFixedRate`
+>
+> Ensure that when the thread pool is executing a task, the task throws an uncontrollable exception and causes task
+> scheduling to be blocked.
+
+- `scheduled`
+  - `SafeScheduledThreadPoolExecutor`
+    - extends `ScheduledThreadPoolExecutor`
+    - ext. Methods
+      - `scheduleWithFixedDelay`
+      - `scheduleAtFixedRate`

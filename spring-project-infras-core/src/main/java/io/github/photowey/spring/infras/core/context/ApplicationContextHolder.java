@@ -74,8 +74,16 @@ public enum ApplicationContextHolder {
         return (T) target;
     }
 
+    // ----------------------------------------------------------------
+
     public void cleanSharedObjects() {
         this.sharedObjects.clear();
+    }
+
+    // ----------------------------------------------------------------
+
+    public static void clean() {
+        INSTANCE.cleanSharedObjects();
     }
 }
 
