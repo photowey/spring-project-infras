@@ -15,13 +15,7 @@
  */
 package io.github.photowey.spring.infras.starter.autoconfigure.config;
 
-import io.github.photowey.spring.infras.bean.annotation.EnableInfrasComponents;
-import io.github.photowey.spring.infras.starter.autoconfigure.property.SpringInfrasProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -38,17 +32,10 @@ import org.springframework.context.annotation.Import;
         SpringInfrasConfigure.SpringInfrasComponentConfigure.class,
 })
 @ConditionalOnMissingClass("org.springframework.boot.autoconfigure.AutoConfiguration")
-public class SpringInfrasConfigure implements SmartInitializingSingleton {
-
-    private static final Logger log = LoggerFactory.getLogger(SpringInfrasConfigure.class);
+public class SpringInfrasConfigure extends AbstractSpringInfrasConfigure {
 
     @Override
     public void afterSingletonsInstantiated() {
         log.info("infras: auto.configure.in.mode: [spring.factories]");
     }
-
-    @Configuration
-    @EnableInfrasComponents
-    @EnableConfigurationProperties(SpringInfrasProperties.class)
-    static class SpringInfrasComponentConfigure {}
 }
