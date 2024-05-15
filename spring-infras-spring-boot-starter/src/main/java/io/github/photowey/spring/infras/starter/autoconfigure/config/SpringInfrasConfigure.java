@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(value = {
         TaskExecutorConfigure.class,
-        SpringInfrasConfigure.SpringInfrasComponentConfigure.class,
+        AbstractSpringInfrasConfigure.SpringInfrasComponentConfigure.class,
 })
 @ConditionalOnMissingClass("org.springframework.boot.autoconfigure.AutoConfiguration")
 public class SpringInfrasConfigure extends AbstractSpringInfrasConfigure {

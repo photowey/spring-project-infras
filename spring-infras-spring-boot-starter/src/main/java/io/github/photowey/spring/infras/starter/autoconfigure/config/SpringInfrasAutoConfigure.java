@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
 @AutoConfiguration
 @Import(value = {
         TaskExecutorConfigure.class,
-        SpringInfrasAutoConfigure.SpringInfrasComponentConfigure.class,
+        AbstractSpringInfrasConfigure.SpringInfrasComponentConfigure.class,
 })
 @ConditionalOnClass(AutoConfiguration.class)
 public class SpringInfrasAutoConfigure extends AbstractSpringInfrasConfigure {

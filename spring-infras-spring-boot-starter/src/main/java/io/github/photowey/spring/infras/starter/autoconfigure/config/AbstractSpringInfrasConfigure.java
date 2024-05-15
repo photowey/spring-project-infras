@@ -17,7 +17,7 @@ package io.github.photowey.spring.infras.starter.autoconfigure.config;
 
 import io.github.photowey.spring.infras.bean.annotation.EnableInfrasComponents;
 import io.github.photowey.spring.infras.starter.autoconfigure.property.SpringInfrasProperties;
-import io.github.photowey.spring.infras.web.reader.NetworkResourceReader;
+import io.github.photowey.spring.infras.web.reader.RemoteResourceReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
@@ -41,9 +41,9 @@ public abstract class AbstractSpringInfrasConfigure implements SmartInitializing
     @EnableConfigurationProperties(SpringInfrasProperties.class)
     static class SpringInfrasComponentConfigure {
 
-        @Bean
-        public NetworkResourceReader resourceReader() {
-            return new NetworkResourceReader();
+        @Bean("io.github.photowey.spring.infras.web.reader.RemoteResourceReader")
+        public RemoteResourceReader resourceReader() {
+            return new RemoteResourceReader();
         }
     }
 }

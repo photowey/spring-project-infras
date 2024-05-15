@@ -118,35 +118,35 @@ public class ResourceReader implements ResourceLoaderAware {
         throw new UnsupportedOperationException("Resource: [" + location + " ] Unreadable.");
     }
 
-    public String toStr(String location) throws IOException {
+    public String read(String location) throws IOException {
         try (InputStream input = this.tryReadStream(location);) {
             if (input != null) {
-                return this.toStr(input);
+                return this.read(input);
             }
         }
 
         return null;
     }
 
-    public String toStr(Resource resource) throws IOException {
+    public String read(Resource resource) throws IOException {
         if (resource.isReadable()) {
             try (InputStream input = resource.getInputStream()) {
-                return this.toStr(input);
+                return this.read(input);
             }
         }
 
         return null;
     }
 
-    public String toStr(InputStream input) throws IOException {
-        return toStr(input, Function.identity());
+    public String read(InputStream input) throws IOException {
+        return read(input, Function.identity());
     }
 
-    public String toStr(InputStream input, Function<String, String> mapper) throws IOException {
-        return toStr(input, line -> true, mapper);
+    public String read(InputStream input, Function<String, String> mapper) throws IOException {
+        return read(input, line -> true, mapper);
     }
 
-    public String toStr(InputStream input, Predicate<String> filter, Function<String, String> mapper) throws IOException {
+    public String read(InputStream input, Predicate<String> filter, Function<String, String> mapper) throws IOException {
         if (null == input) {
             return null;
         }

@@ -33,15 +33,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
- * {@code NetworkResourceReader}
+ * {@code RemoteResourceReader}
  *
  * @author photowey
  * @version 1.4.0
  * @since 2024/05/15
  */
-public class NetworkResourceReader extends ResourceReader implements
+public class RemoteResourceReader extends ResourceReader implements
         RestTemplateGetter, BeanFactoryGetter, BeanFactoryAware {
 
     private ConfigurableListableBeanFactory beanFactory;
@@ -59,7 +60,11 @@ public class NetworkResourceReader extends ResourceReader implements
 
     @Override
     public RestTemplate restTemplate() {
-        return this.ctx.computeIfAbsent(RestTemplate.class, (x) -> this.tryRestTemplate());
+        if (this.ctx.containsKey(RestTemplate.class)) {
+            return this.ctx.get(RestTemplate.class);
+        }
+
+        return this.tryRestTemplate();
     }
 
     public void register(RestTemplate restTemplate) {
@@ -71,17 +76,20 @@ public class NetworkResourceReader extends ResourceReader implements
     }
 
     public Resource tryNetworkRead(String uri, Consumer<UriComponentsBuilder> fx) {
-        return this.tryNetworkRead(uri, fx, NoOpsConsumer::accept);
+        return this.tryNetworkRead(uri, fx, Function.identity());
     }
 
-    public Resource tryNetworkRead(String uri, Consumer<UriComponentsBuilder> fx, Consumer<UriComponents> fn) {
+    public Resource tryNetworkRead(String uri, Consumer<UriComponentsBuilder> fx, Function<UriComponents, UriComponents> fn) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(uri);
         fx.accept(builder);
         UriComponents components = builder.build();
         // expand or ...
-        fn.accept(components);
+        UriComponents newest = fn.apply(components);
+        if (null == newest) {
+            throw new IllegalArgumentException("The Function:fn result can't be null");
+        }
 
-        java.net.URI remote = components.toUri();
+        java.net.URI remote = newest.toUri();
 
         return this.tryNetworkRead(remote);
     }
@@ -99,10 +107,11 @@ public class NetworkResourceReader extends ResourceReader implements
     }
 
     public Resource tryNetworkRead(java.net.URI uri, HttpMethod method, RequestEntity<?> request) {
-        if (null == this.restTemplate()) {
+        RestTemplate restTemplate = this.restTemplate();
+        if (null == restTemplate) {
             return null;
         }
-        ResponseEntity<Resource> response = this.restTemplate().exchange(uri, method, request, Resource.class);
+        ResponseEntity<Resource> response = restTemplate.exchange(uri, method, request, Resource.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }
@@ -115,12 +124,12 @@ public class NetworkResourceReader extends ResourceReader implements
     private RestTemplate tryRestTemplate() {
         try {
             return this.beanFactory.getBean(RestTemplate.class);
-        } catch (BeansException e) {
+        } catch (Throwable e) {
             return this.ctx.computeIfAbsent(RestTemplate.class, this::init);
         }
     }
 
-    private RestTemplate init(Class<?> ignored) {
+    private <T> RestTemplate init(Class<T> ignored) {
         return new RestTemplate();
     }
 }
