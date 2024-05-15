@@ -16,13 +16,13 @@
 package io.github.photowey.spring.infras.common.function.consumer;
 
 /**
- * {@code NoOpsConsumer}
+ * {@code NoOpsDoubleConsumer}
  *
  * @author photowey
  * @version 1.4.0
  * @since 2024/05/15
  */
-public interface NoOpsConsumer {
+public interface NoOpsDoubleConsumer {
 
-    static <T> void accept(T ok) {}
+    static <T, U> void accept(T ok, U hi) {}
 }
