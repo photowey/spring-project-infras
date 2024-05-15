@@ -314,4 +314,9 @@ public enum JSON {
         ;
     }
 
+    public static void clean() {
+        io.github.photowey.spring.infras.common.json.jackson.Jackson.clean();
+        // ...
+    }
+
 }
