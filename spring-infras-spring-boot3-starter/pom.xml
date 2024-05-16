@@ -10,8 +10,13 @@
         <version>1.5.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-infras-spring-boot-starter</artifactId>
-    <description>The Spring Boot starter module of spring-project-infras.</description>
+    <artifactId>spring-infras-spring-boot3-starter</artifactId>
+    <description>The Spring Boot V3 starter module of spring-project-infras.</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -44,15 +49,46 @@
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot-v3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-boot-v3.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure-processor</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>${spring-boot-v3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring6.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring6.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
