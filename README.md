@@ -115,6 +115,53 @@ public class App {
 - `JacksonJsonConverter`
   - `DefaultJacksonJsonConverter`
 
+
+
+#### 2.1.7.`@EnvironmentProfile`
+
+> `@since 1.4.0`
+
+- An extender of `@Profile`
+  - Support `${a.b.c.....z}` or `!${a.b.c.....z}`
+
+
+
+#### 2.1.8.`@ConditionalOnSpEL`
+
+- An alias of Annotation `@EnvironmentProfile`
+
+```java
+// @Profile("dev")
+
+@Slf4j
+@Component
+@EnvironmentProfile("!${io.github.photowey.github.accessor.mock.profiles}")
+public class NonMockGithubAccessor implements GithubAccessor {}
+```
+
+```java
+@Slf4j
+@Component
+@ConditionalOnSpEL("${io.github.photowey.github.accessor.mock.profiles}")
+public class MockGithubAccessor implements GithubAccessor {}
+```
+
+
+
+#### 2.1.9.`ResourceReader`
+
+> `@since 1.4.0`
+>
+> Support read `FileSystem` and `Classpath` resource
+
+#### 2.1.10.`RemoteResourceReader`
+
+> `RemoteResourceReader` extends `ResourceReader`
+>
+> - Support read Remote resource, `e.g.`: `https://xxx/yyy/zzz`
+
+
+
 ### 2.2.`bean` module
 
 [spring-project-infras-bean-example](https://github.com/photowey/spring-project-infras-examples)
@@ -238,6 +285,10 @@ public class App {
 - `TripleConsumer`
 - `QuadraConsumer`
 - `PentaConsumer`
+- `NoOpsConsumer`
+  - `@since 1.4.0`
+- `NoOpsDoubleConsumer`
+  - `@since 1.4.0`
 
 #### 2.5.2.`Lambda Function`
 
