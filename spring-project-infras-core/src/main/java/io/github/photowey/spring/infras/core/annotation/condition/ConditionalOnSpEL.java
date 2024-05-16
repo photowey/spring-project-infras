@@ -15,12 +15,13 @@
  */
 package io.github.photowey.spring.infras.core.annotation.condition;
 
-import org.springframework.context.annotation.Conditional;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
 /**
- * {@code EnvironmentProfile}
+ * {@code ConditionalOnSpEL}
+ * |- Alias for {@code EnvironmentProfile}
  * <p>
  * Examples:
  * <pre>
@@ -35,27 +36,28 @@ import java.lang.annotation.*;
  * {@literal @}Profile("prod")
  *  public class DefaultGithubAccessor implements GithubAccessor {}
  *
- * {@literal @}EnvironmentProfile("${io.github.photowey.github.accessor.mock.profiles}")
+ * {@literal @}ConditionalOnSpEL("${io.github.photowey.github.accessor.mock.profiles}")
  *  public class MockGithubAccessor implements GithubAccessor {}
  *
- * {@literal @}EnvironmentProfile("!${io.github.photowey.github.accessor.mock.profiles}")
+ * {@literal @}ConditionalOnSpEL("!${io.github.photowey.github.accessor.mock.profiles}")
  *  public class NonMockGithubAccessor implements GithubAccessor {}
  * </pre>
  *
  * @author photowey
- * @version 1.4.0
- * @since 2024/05/15
+ * @version 1.0.0
+ * @since 2024/05/16
  */
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Conditional(EnvironmentProfileCondition.class)
-public @interface EnvironmentProfile {
+@EnvironmentProfile
+public @interface ConditionalOnSpEL {
 
     /**
      * The set of profiles for which the annotated component should be registered.
      * Multiple profiles can be specified and separated by commas.
      */
+    @AliasFor(annotation = EnvironmentProfile.class, attribute = "value")
     String value() default "dev";
 }

@@ -18,14 +18,13 @@ package io.github.photowey.spring.infras.core.annotation.condition;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.util.MultiValueMap;
+import org.springframework.core.type.AnnotationMetadata;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@code EnvironmentProfileCondition}
@@ -37,39 +36,47 @@ import java.util.stream.Stream;
 class EnvironmentProfileCondition implements Condition {
 
     private static final String VALUE = "value";
+    private static final String ANNOTATION_SUPPORTS = EnvironmentProfile.class.getName();
+
+    private final ConcurrentHashMap<String, Boolean> ctx = new ConcurrentHashMap<>();
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(EnvironmentProfile.class.getName());
-        if (attrs != null) {
-            for (Object expectProfiles : attrs.get(VALUE)) {
-                String[] parsedProfiles = this.parseProfiles(context, expectProfiles);
-                if (this.acceptsProfiles(context, parsedProfiles)) {
-                    return true;
-                }
-            }
+        Environment env = context.getEnvironment();
+        String expression = (String) metadata.getAnnotationAttributes(ANNOTATION_SUPPORTS).get(VALUE);
 
-            return false;
-        }
+        String profiles = env.resolvePlaceholders(expression);
+        String cacheKey = this.populateCacheKey(metadata, profiles);
 
-        return true;
+        return this.ctx.computeIfAbsent(cacheKey, x -> this.evaluateCondition(context, profiles));
     }
 
-    private boolean acceptsProfiles(ConditionContext context, String[] parsedProfiles) {
-        return context.getEnvironment().acceptsProfiles(Profiles.of(parsedProfiles));
+    private String populateCacheKey(AnnotatedTypeMetadata metadata, String profiles) {
+        String className = this.tryAcquireClassName(metadata);
+        return className + ":" + profiles;
     }
 
-    private String[] parseProfiles(ConditionContext context, Object profiles) {
-        String[] expectProfiles = (String[]) profiles;
-        Environment environment = context.getEnvironment();
-
-        List<String> parsedProfiles = new ArrayList<>();
-
-        for (String profile : expectProfiles) {
-            List<String> parsed = Stream.of(environment.resolvePlaceholders(profile).split(",")).collect(Collectors.toList());
-            parsedProfiles.addAll(parsed);
+    private boolean evaluateCondition(ConditionContext context, String profiles) {
+        Environment env = context.getEnvironment();
+        boolean negate = false;
+        if (profiles.startsWith("!")) {
+            negate = true;
+            profiles = profiles.substring(1);
         }
 
-        return parsedProfiles.toArray(new String[0]);
+        Set<String> requiredProfiles = new HashSet<>(Arrays.asList(profiles.split(",")));
+        Set<String> activeProfiles = new HashSet<>(Arrays.asList(env.getActiveProfiles()));
+
+        boolean matches = !requiredProfiles.isEmpty() && requiredProfiles.stream().anyMatch(activeProfiles::contains);
+
+        return negate != matches;
+    }
+
+    private String tryAcquireClassName(AnnotatedTypeMetadata metadata) {
+        if (metadata instanceof AnnotationMetadata) {
+            return ((AnnotationMetadata) metadata).getClassName();
+        }
+
+        throw new UnsupportedOperationException("Unsupported metadata:[" + metadata.getClass().getName() + "]");
     }
 }
