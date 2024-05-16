@@ -9,6 +9,8 @@ Add this to your `pom.xml`
 
 ### 1.1.`Spring Boot` projects.
 
+1.1.1.`Spring Boot 2.x`
+
 ```xml
 <!-- ${spring-project-infras.version} == ${latest.version} -->
 <!-- https://central.sonatype.com/artifact/io.github.photowey/spring-project-infras/versions -->
@@ -19,7 +21,16 @@ Add this to your `pom.xml`
 </dependency>
 ```
 
+#### 1.1.2.`Spring Boot 3.x`
 
+```xml
+
+<dependency>
+  <!-- ... -->
+  <artifactId>spring-infras-spring-boot3-starter</artifactId>
+  <!-- ... -->
+</dependency>
+```
 
 ### 1.2.`Spring` projects.
 
