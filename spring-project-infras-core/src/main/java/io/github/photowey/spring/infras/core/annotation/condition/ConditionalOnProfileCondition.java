@@ -27,17 +27,16 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * {@code EnvironmentProfileCondition}
+ * {@code ConditionalOnProfileCondition}
  *
  * @author photowey
- * @version 1.4.0
- * @since 2024/05/15
+ * @version 1.6.0
+ * @since 2024/05/18
  */
-@Deprecated
-class EnvironmentProfileCondition implements Condition {
+class ConditionalOnProfileCondition implements Condition {
 
     private static final String VALUE = "value";
-    private static final String ANNOTATION_SUPPORTS = EnvironmentProfile.class.getName();
+    private static final String ANNOTATION_SUPPORTS = ConditionalOnProfile.class.getName();
 
     private final ConcurrentHashMap<String, Boolean> ctx = new ConcurrentHashMap<>();
 
