@@ -464,4 +464,126 @@ class JSONTest extends LocalTest {
         Assertions.assertEquals(ctx3.get("name").asText(), student.getName());
         Assertions.assertEquals(ctx3.get("age").asInt(), student.getAge());
     }
+
+    // ----------------------------------------------------------------
+
+    @Test
+    void testParseArray_simple() {
+        long now = System.currentTimeMillis();
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        String jsonArray = JSON.Jackson.toJSONString(students);
+        byte[] bytes = jsonArray.getBytes(StandardCharsets.UTF_8);
+
+        List<Student> simpleList1 = JSON.Jackson.parseArray(jsonArray, Student.class);
+        Assertions.assertNotNull(simpleList1);
+        Assertions.assertEquals(1, simpleList1.size());
+        Assertions.assertEquals(now, simpleList1.get(0).getId());
+
+        List<Student> simpleList2 = JSON.Jackson.parseArray(bytes, Student.class);
+        Assertions.assertNotNull(simpleList2);
+        Assertions.assertEquals(1, simpleList2.size());
+        Assertions.assertEquals(now, simpleList2.get(0).getId());
+
+        List<Student> simpleList3 = JSON.Jackson.parseArray(new ByteArrayInputStream(bytes), Student.class);
+        Assertions.assertNotNull(simpleList3);
+        Assertions.assertEquals(1, simpleList3.size());
+        Assertions.assertEquals(now, simpleList3.get(0).getId());
+    }
+
+    @Test
+    void testToList_simple() {
+        long now = System.currentTimeMillis();
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        String jsonArray = JSON.Jackson.toJSONString(students);
+        byte[] bytes = jsonArray.getBytes(StandardCharsets.UTF_8);
+
+        List<Student> simpleList1 = JSON.Jackson.toList(jsonArray, Student.class);
+        Assertions.assertNotNull(simpleList1);
+        Assertions.assertEquals(1, simpleList1.size());
+        Assertions.assertEquals(now, simpleList1.get(0).getId());
+
+        List<Student> simpleList2 = JSON.Jackson.toList(bytes, Student.class);
+        Assertions.assertNotNull(simpleList2);
+        Assertions.assertEquals(1, simpleList2.size());
+        Assertions.assertEquals(now, simpleList2.get(0).getId());
+
+        List<Student> simpleList3 = JSON.Jackson.toList(new ByteArrayInputStream(bytes), Student.class);
+        Assertions.assertNotNull(simpleList3);
+        Assertions.assertEquals(1, simpleList3.size());
+        Assertions.assertEquals(now, simpleList3.get(0).getId());
+    }
+
+    @Test
+    void testToSet_simple() {
+        long now = System.currentTimeMillis();
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        String jsonArray = JSON.Jackson.toJSONString(students);
+        byte[] bytes = jsonArray.getBytes(StandardCharsets.UTF_8);
+
+        Set<Student> simpleSet1 = JSON.Jackson.toSet(jsonArray, Student.class);
+        Assertions.assertNotNull(simpleSet1);
+        Assertions.assertEquals(1, simpleSet1.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleSet1).get(0).getId());
+
+        Set<Student> simpleSet2 = JSON.Jackson.toSet(bytes, Student.class);
+        Assertions.assertNotNull(simpleSet2);
+        Assertions.assertEquals(1, simpleSet2.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleSet2).get(0).getId());
+
+        Set<Student> simpleSet3 = JSON.Jackson.toSet(new ByteArrayInputStream(bytes), Student.class);
+        Assertions.assertNotNull(simpleSet3);
+        Assertions.assertEquals(1, simpleSet3.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleSet3).get(0).getId());
+    }
+
+    @Test
+    void testToCollection_simple() {
+        long now = System.currentTimeMillis();
+        Student student = Student.builder()
+                .id(now)
+                .name("photowey")
+                .age(18)
+                .build();
+
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        String jsonArray = JSON.Jackson.toJSONString(students);
+        byte[] bytes = jsonArray.getBytes(StandardCharsets.UTF_8);
+
+        Collection<Student> simpleCollection1 = JSON.Jackson.toCollection(jsonArray, Student.class);
+        Assertions.assertNotNull(simpleCollection1);
+        Assertions.assertEquals(1, simpleCollection1.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleCollection1).get(0).getId());
+
+        Collection<Student> simpleCollection2 = JSON.Jackson.toCollection(bytes, Student.class);
+        Assertions.assertNotNull(simpleCollection2);
+        Assertions.assertEquals(1, simpleCollection2.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleCollection2).get(0).getId());
+
+        Collection<Student> simpleCollection3 = JSON.Jackson.toCollection(new ByteArrayInputStream(bytes), Student.class);
+        Assertions.assertNotNull(simpleCollection3);
+        Assertions.assertEquals(1, simpleCollection3.size());
+        Assertions.assertEquals(now, new ArrayList<>(simpleCollection3).get(0).getId());
+    }
 }

@@ -21,12 +21,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.photowey.spring.infras.common.thrower.AssertionErrorThrower;
 
 import java.io.InputStream;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -204,6 +205,23 @@ public final class Jackson {
         return parseObject(objectMapper, json, typeRef);
     }
 
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@code String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
+        return parseList(json, clazz);
+    }
+
+    public static <T> List<T> parseArray(ObjectMapper objectMapper, String json, Class<T> clazz) {
+        return parseList(objectMapper, json, clazz);
+    }
+
     // ----------------------------------------------------------------
 
     public static <T> T parseArray(byte[] json, TypeReference<T> typeRef) {
@@ -214,6 +232,23 @@ public final class Jackson {
         return parseObject(objectMapper, json, typeRef);
     }
 
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseArray(byte[] json, Class<T> clazz) {
+        return parseList(json, clazz);
+    }
+
+    public static <T> List<T> parseArray(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
+        return parseList(objectMapper, json, clazz);
+    }
+
     // ----------------------------------------------------------------
 
     public static <T> T parseArray(InputStream json, TypeReference<T> typeRef) {
@@ -222,6 +257,245 @@ public final class Jackson {
 
     public static <T> T parseArray(ObjectMapper objectMapper, InputStream json, TypeReference<T> typeRef) {
         return parseObject(objectMapper, json, typeRef);
+    }
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseArray(InputStream json, Class<T> clazz) {
+        return parseList(json, clazz);
+    }
+
+    public static <T> List<T> parseArray(ObjectMapper objectMapper, InputStream json, Class<T> clazz) {
+        return parseList(objectMapper, json, clazz);
+    }
+
+    // ----------------------------------------------------------------
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@code String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseList(String json, Class<T> clazz) {
+        return parseList(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> List<T> parseList(ObjectMapper objectMapper, String json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(List.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseList(byte[] json, Class<T> clazz) {
+        return parseList(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> List<T> parseList(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(List.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> parseList(InputStream json, Class<T> clazz) {
+        return parseList(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> List<T> parseList(ObjectMapper objectMapper, InputStream json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(List.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    // ----------------------------------------------------------------
+
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@link String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> parseSet(String json, Class<T> clazz) {
+        return parseSet(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Set<T> parseSet(ObjectMapper objectMapper, String json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Set.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> parseSet(byte[] json, Class<T> clazz) {
+        return parseSet(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Set<T> parseSet(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Set.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> parseSet(InputStream json, Class<T> clazz) {
+        return parseSet(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Set<T> parseSet(ObjectMapper objectMapper, InputStream json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Set.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    // ----------------------------------------------------------------
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@link String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> parseCollection(String json, Class<T> clazz) {
+        return parseCollection(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Collection<T> parseCollection(ObjectMapper objectMapper, String json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Collection.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> parseCollection(byte[] json, Class<T> clazz) {
+        return parseCollection(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Collection<T> parseCollection(ObjectMapper objectMapper, byte[] json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Collection.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> parseCollection(InputStream json, Class<T> clazz) {
+        return parseCollection(getObjectMapper(), json, clazz);
+    }
+
+    public static <T> Collection<T> parseCollection(ObjectMapper objectMapper, InputStream json, Class<T> clazz) {
+        checkNPE(objectMapper);
+        try {
+            TypeFactory typeFactory = objectMapper.getTypeFactory();
+            CollectionType collectionType = typeFactory.constructCollectionType(Collection.class, clazz);
+            return objectMapper.readValue(json, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
     }
 
     // ----------------------------------------------------------------
@@ -240,6 +514,59 @@ public final class Jackson {
 
     // ----------------------------------------------------------------
 
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@link String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> toList(String json, Class<T> clazz) {
+        try {
+            return parseList(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> toList(byte[] json, Class<T> clazz) {
+        try {
+            return parseList(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link List}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> List<T> toList(InputStream json, Class<T> clazz) {
+        try {
+            return parseList(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    // ----------------------------------------------------------------
+
     public static <T> T toSet(String json, TypeReference<T> typeRef) {
         return parseObject(json, typeRef);
     }
@@ -254,6 +581,59 @@ public final class Jackson {
 
     // ----------------------------------------------------------------
 
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@link String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> toSet(String json, Class<T> clazz) {
+        try {
+            return parseSet(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> toSet(byte[] json, Class<T> clazz) {
+        try {
+            return parseSet(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Set}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Set<T> toSet(InputStream json, Class<T> clazz) {
+        try {
+            return parseSet(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    // ----------------------------------------------------------------
+
     public static <T> T toCollection(String json, TypeReference<T> typeRef) {
         return parseObject(json, typeRef);
     }
@@ -264,6 +644,59 @@ public final class Jackson {
 
     public static <T> T toCollection(InputStream json, TypeReference<T> typeRef) {
         return parseObject(json, typeRef);
+    }
+
+    // ----------------------------------------------------------------
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@link String} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> toCollection(String json, Class<T> clazz) {
+        try {
+            return parseCollection(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@code byte} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> toCollection(byte[] json, Class<T> clazz) {
+        try {
+            return parseCollection(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    /**
+     * Parse {@code json} Array to {@link Collection}
+     *
+     * @param json  {@link InputStream} json
+     * @param clazz the target class type
+     * @param <T>   T class
+     * @return T
+     * @since 1.6.0
+     */
+    public static <T> Collection<T> toCollection(InputStream json, Class<T> clazz) {
+        try {
+            return parseCollection(json, clazz);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
     }
 
     // ----------------------------------------------------------------
