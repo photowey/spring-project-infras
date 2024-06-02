@@ -21,7 +21,7 @@ import java.lang.annotation.*;
 
 /**
  * {@code ConditionalOnSpEL}
- * |- Alias for {@code EnvironmentProfile}
+ * |- Alias for {@code ConditionalOnProfile}
  * <p>
  * Examples:
  * <pre>
@@ -44,20 +44,20 @@ import java.lang.annotation.*;
  * </pre>
  *
  * @author photowey
- * @version 1.0.0
+ * @version 1.5.0
  * @since 2024/05/16
  */
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@EnvironmentProfile
+@ConditionalOnProfile
 public @interface ConditionalOnSpEL {
 
     /**
      * The set of profiles for which the annotated component should be registered.
      * Multiple profiles can be specified and separated by commas.
      */
-    @AliasFor(annotation = EnvironmentProfile.class, attribute = "value")
+    @AliasFor(annotation = ConditionalOnProfile.class, attribute = "value")
     String value() default "dev";
 }

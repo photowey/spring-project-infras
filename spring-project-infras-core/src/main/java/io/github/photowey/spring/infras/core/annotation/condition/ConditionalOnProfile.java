@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Conditional;
 import java.lang.annotation.*;
 
 /**
- * {@code EnvironmentProfile}
+ * {@code ConditionalOnProfile}
  * <p>
  * Examples:
  * <pre>
@@ -35,26 +35,23 @@ import java.lang.annotation.*;
  * {@literal @}Profile("prod")
  *  public class DefaultGithubAccessor implements GithubAccessor {}
  *
- * {@literal @}EnvironmentProfile("${io.github.photowey.github.accessor.mock.profiles}")
+ * {@literal @}ConditionalOnProfile("${io.github.photowey.github.accessor.mock.profiles}")
  *  public class MockGithubAccessor implements GithubAccessor {}
  *
- * {@literal @}EnvironmentProfile("!${io.github.photowey.github.accessor.mock.profiles}")
+ * {@literal @}ConditionalOnProfile("!${io.github.photowey.github.accessor.mock.profiles}")
  *  public class NonMockGithubAccessor implements GithubAccessor {}
  * </pre>
- * <p>
- * Use {@link ConditionalOnProfile} instead.
  *
  * @author photowey
- * @version 1.4.0
- * @since 2024/05/15
+ * @version 1.6.0
+ * @since 2024/05/18
  */
-@Deprecated
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Conditional(EnvironmentProfileCondition.class)
-public @interface EnvironmentProfile {
+@Conditional(ConditionalOnProfileCondition.class)
+public @interface ConditionalOnProfile {
 
     /**
      * The set of profiles for which the annotated component should be registered.

@@ -25,7 +25,7 @@ package io.github.photowey.spring.infras.core.strategy;
 public interface StrategySupporter {
 
     /**
-     * Supports ot not.
+     * Supports or not.
      *
      * @param strategy the strategy.
      * @return {@code boolean}
