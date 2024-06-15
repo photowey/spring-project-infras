@@ -6,7 +6,7 @@
 
     <groupId>io.github.photowey</groupId>
     <artifactId>spring-project-infras</artifactId>
-    <version>1.6.0</version>
+    <version>1.7.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>${project.groupId}:${project.artifactId}</name>

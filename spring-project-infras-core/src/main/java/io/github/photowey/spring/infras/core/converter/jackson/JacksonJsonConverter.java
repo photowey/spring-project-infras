@@ -16,10 +16,13 @@
 package io.github.photowey.spring.infras.core.converter.jackson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.github.photowey.spring.infras.core.converter.JsonConverter;
 import io.github.photowey.spring.infras.core.getter.ObjectMapperGetter;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -126,4 +129,43 @@ public interface JacksonJsonConverter extends JsonConverter, ObjectMapperGetter 
     default <T> T parseArray(InputStream body, TypeReference<T> typeRef) {
         return this.parseObject(body, typeRef);
     }
+
+    // ----------------------------------------------------------------
+
+    @Override
+    default <T> List<T> parseArray(String body, Class<T> clazz) {
+        try {
+            CollectionType collectionType = this.toListCollectionType(clazz);
+            return this.objectMapper().readValue(body, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    @Override
+    default <T> List<T> parseArray(byte[] body, Class<T> clazz) {
+        try {
+            CollectionType collectionType = this.toListCollectionType(clazz);
+            return this.objectMapper().readValue(body, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    @Override
+    default <T> List<T> parseArray(InputStream body, Class<T> clazz) {
+        try {
+            CollectionType collectionType = this.toListCollectionType(clazz);
+            return this.objectMapper().readValue(body, collectionType);
+        } catch (Exception e) {
+            return throwUnchecked(e);
+        }
+    }
+
+    default <T> CollectionType toListCollectionType(Class<T> clazz) {
+        TypeFactory typeFactory = this.objectMapper().getTypeFactory();
+        return typeFactory.constructCollectionType(List.class, clazz);
+    }
+
+    // ----------------------------------------------------------------
 }

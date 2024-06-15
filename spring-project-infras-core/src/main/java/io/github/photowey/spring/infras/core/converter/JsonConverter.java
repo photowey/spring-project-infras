@@ -16,6 +16,7 @@
 package io.github.photowey.spring.infras.core.converter;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,9 +36,21 @@ public interface JsonConverter extends Converter {
 
     <T> T parseObject(InputStream body, Class<T> clazz);
 
+    // ----------------------------------------------------------------
+
+    <T> List<T> parseArray(String body, Class<T> clazz);
+
+    <T> List<T> parseArray(byte[] body, Class<T> clazz);
+
+    <T> List<T> parseArray(InputStream body, Class<T> clazz);
+
+    // ----------------------------------------------------------------
+
     <T> T toObject(Map<String, Object> map, Class<T> targetClass);
 
     <T> Map<String, Object> toMap(T object);
+
+    // ----------------------------------------------------------------
 
     default <T> T throwUnchecked(final Throwable ex, final Class<T> returnType) {
         throwsUnchecked(ex);
