@@ -1,0 +1,68 @@
+/*
+ * Copyright © 2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.github.photowey.spring.infras.common.option;
+
+import java.util.Optional;
+import java.util.function.Supplier;
+
+/**
+ * {@code Option}
+ *
+ * @author photowey
+ * @version 1.7.0
+ * @since 2024/07/22
+ */
+@SuppressWarnings("all")
+public class Option<T> {
+
+    private final Optional<T> value;
+
+    private Option(Optional<T> value) {
+        this.value = value;
+    }
+
+    public static <T> Option<T> Some(T value) {
+        return new Option<>(Optional.of(value));
+    }
+
+    public static <T> Option<T> None() {
+        return new Option<>(Optional.empty());
+    }
+
+    public boolean isSome() {
+        return value.isPresent();
+    }
+
+    public boolean isNone() {
+        return !value.isPresent();
+    }
+
+    public T unwrap() {
+        return value.orElse(null);
+    }
+
+    public T expect(String message) {
+        return value.orElseThrow(() -> new RuntimeException(message));
+    }
+
+    public T unwrapOr(T defaultValue) {
+        return value.orElse(defaultValue);
+    }
+
+    public T unwrapOrElse(Supplier<? extends T> supplier) {
+        return value.orElseGet(supplier);
+    }
+}
